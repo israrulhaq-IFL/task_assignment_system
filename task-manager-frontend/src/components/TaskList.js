@@ -21,9 +21,7 @@ const TaskList = ({ tasks, onDelete, onStatusChange, user, canDragAndDrop }) => 
 
   useEffect(() => {
     console.log('TaskList received tasks:', tasks); // Log the received tasks
-    // Sort tasks by created_at date in descending order
-    const sortedTasks = [...tasks].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    setTaskList(sortedTasks);
+    setTaskList(tasks); // Directly set the tasks without sorting
   }, [tasks]);
 
   const handleStatusChange = (taskId, newStatus) => {

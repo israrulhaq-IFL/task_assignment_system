@@ -21,20 +21,20 @@ const generateRefreshToken = (user) => {
 exports.register = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log('Validation errors:', errors.array()); // Log the validation errors
+    //console.log('Validation errors:', errors.array()); // Log the validation errors
 
     return res.status(400).json({ errors: errors.array() });
   }
 
   const userData = req.body;
-  console.log('Registering user with data:', userData); // Log the user data
+  //console.log('Registering user with data:', userData); // Log the user data
 
   bcrypt.hash(userData.password, 10, (err, hashedPassword) => {
     if (err) {
       console.error('Error hashing password:', err.message);
       return res.status(500).json({ error: err.message });
     }
-    console.log('Hashed:', hashedPassword); // Log the hashed password
+   // console.log('Hashed:', hashedPassword); // Log the hashed password
     userData.password = hashedPassword;
 
     User.create(userData, (err, result) => {
@@ -48,7 +48,7 @@ exports.register = (req, res) => {
       // Save the refresh token in the database or a secure storage
       User.saveRefreshToken(result.insertId, refreshToken);
 
-      console.log('Generated tokens:', { accessToken, refreshToken }); // Log the generated tokens
+      //console.log('Generated tokens:', { accessToken, refreshToken }); // Log the generated tokens
       res.status(201).json({ message: 'User registered successfully', accessToken, refreshToken });
     });
   });
@@ -86,7 +86,7 @@ exports.login = (req, res) => {
       // Save the refresh token in the database or a secure storage
       await User.saveRefreshToken(user.user_id, refreshToken);
 
-      console.log('Generated tokens:', { accessToken, refreshToken }); // Log the generated tokens
+      //console.log('Generated tokens:', { accessToken, refreshToken }); // Log the generated tokens
       res.status(200).json({ accessToken, refreshToken });
     });
   });
@@ -99,11 +99,11 @@ exports.logout = (req, res) => {
   }
 
   const token = authHeader.replace('Bearer ', '');
-  console.log('Token received for logout:', token); // Log the token received
+  //console.log('Token received for logout:', token); // Log the token received
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log('Decoded token:', decoded); // Log the decoded token
+   // console.log('Decoded token:', decoded); // Log the decoded token
     blacklist.push(token); // Add the token to the blacklist
     res.send({ message: 'Logged out successfully' });
   } catch (error) {

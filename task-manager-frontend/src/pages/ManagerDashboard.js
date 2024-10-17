@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TaskList from '../components/TaskList';
-import { Button, Modal, Alert, Tabs, Tab, Container,} from 'react-bootstrap';
+import { Button, Modal, Alert, Tabs, Tab, Container } from 'react-bootstrap';
 import TaskForm from '../components/TaskForm';
 import axios from 'axios';
 import './Dashboard.css';

@@ -17,21 +17,10 @@ const TaskCard = ({ task, onDelete, onStatusChange, isExpanded, onExpand, onHide
   const datePickerWrapperRef = useRef(null);
 
   useEffect(() => {
-    const fetchInteractions = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/tasks/interactions/${task.task_id}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
-        });
-        const interactions = response.data;
-        const hasInteracted = interactions.some(interaction => interaction.user_id === user.user_id);
-        setHasInteracted(hasInteracted);
-      } catch (error) {
-        console.error('Error fetching interactions:', error);
-      }
-    };
-
-    fetchInteractions();
-  }, [task.task_id, user.user_id]);
+    const interactions = task.interactions || [];
+    const hasInteracted = interactions.some(interaction => interaction.user_id === user.user_id);
+    setHasInteracted(hasInteracted);
+  }, [task.interactions, user.user_id]);
 
   useEffect(() => {
     if (isExpanded) {
@@ -119,6 +108,11 @@ const TaskCard = ({ task, onDelete, onStatusChange, isExpanded, onExpand, onHide
   const isAssignedToUser = user ? assignees.includes(user.name) : false;
   const isCreatedByUser = user ? task.created_by === user.user_id : false;
 
+  // Find the latest interaction
+  const latestInteraction = task.interactions.reduce((latest, interaction) => {
+    return new Date(interaction.interaction_timestamp) > new Date(latest.interaction_timestamp) ? interaction : latest;
+  }, task.interactions[0]);
+
   return (
     <Card className={`mb-3 task-card ${isExpanded ? 'expanded' : ''}`} onClick={handleCardClick} ref={cardRef}>
       {!isExpanded && (
@@ -181,6 +175,16 @@ const TaskCard = ({ task, onDelete, onStatusChange, isExpanded, onExpand, onHide
                 <option value="completed">Completed</option>
               </Form.Control>
             )}
+            <div>
+              <strong>Latest Interaction:</strong>
+              {latestInteraction ? (
+                <p>
+                  {latestInteraction.interaction_type} at {new Date(latestInteraction.interaction_timestamp).toLocaleString()}
+                </p>
+              ) : (
+                <p>No interactions</p>
+              )}
+            </div>
           </>
         )}
       </Card.Body>

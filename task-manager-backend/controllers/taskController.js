@@ -213,15 +213,18 @@ exports.getTasksForManager = (req, res) => {
     return res.status(401).json({ error: 'User not authenticated' });
   }
 
-  const managerId = req.user.id; // Use id instead of user_id
+  const managerId = req.user.user_id; // Use id instead of user_id
   const subDepartmentId = req.user.sub_department_id; // Assuming sub-department ID is available in req.user
 
+  console.log('Fetching tasks for manager:', managerId);
+  console.log('Sub-department ID:', subDepartmentId); 
   Task.getTasksForManager(managerId, subDepartmentId, (err, result) => {
-    console.log('Fetching tasks for manager:', managerId); // Log the manager ID
+   // Log the manager ID
     if (err) {
       console.error('Error fetching tasks for manager:', err);
       return res.status(500).json({ error: err.message });
     }
+   console.log('Fetched tasks for manger:', result); // Log the fetched tasks
     res.status(200).json(result);
   });
 };
@@ -242,16 +245,16 @@ exports.getTasksForTeamMember = (req, res) => {
       console.error('Error fetching tasks for team member:', err); // Log the error
       return res.status(500).json({ error: 'Error fetching tasks for team member' });
     }
+    //console.log('Fetched tasks for temmember:', result); // Log the fetched tasks
     res.status(200).json(result);
   });
 };
 
-
 exports.logInteraction = (req, res) => {
-  console.log('log interaction hit , Request body:', req.body); // Log the request body
+  //console.log('log interaction hit , Request body:', req.body); // Log the request body
   const { taskId, interactionType, interactionDetail } = req.body;
   const userId = req.user.user_id; // Assuming user ID is available in req.user
-
+//console.log('User ID for logs:', userId); // Log the user ID
   const interactionData = {
     user_id: userId,
     task_id: taskId,
@@ -276,6 +279,8 @@ exports.getInteractionsByTaskId = (req, res) => {
       console.error('Error fetching interactions:', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
+
+   // console.log('Fetched intractions:', result);
     res.status(200).json(result);
   });
 };
