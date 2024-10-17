@@ -1,0 +1,61 @@
+.auth-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.auth-form .form-group {
+    margin-bottom: 15px;
+}
+
+.auth-form .form-label {
+    font-weight: bold;
+}
+
+.auth-form .form-control {
+    border-radius: 5px;
+}
+
+.auth-form .btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.auth-form .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.auth-form .btn-link {
+    color: #007bff;
+    text-decoration: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.auth-form .btn-link:hover {
+    text-decoration: underline;
+}
+
+.auth-form .register-btn {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.auth-form .register-btn:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.auth-form .forgot-password-btn {
+    color: #dc3545;
+}
+
+.auth-form .forgot-password-btn:hover {
+    color: #c82333;
+}

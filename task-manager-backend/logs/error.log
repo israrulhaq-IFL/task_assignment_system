@@ -1,0 +1,75 @@
+2024-10-04T17:10:37.425Z [[31merror[39m]: Error: This is a test error
+2024-10-04T17:10:42.159Z [[31merror[39m]: Error: This is a test error
+2024-10-04T17:11:41.717Z [[31merror[39m]: Error: This is a test error
+2024-10-04T17:11:42.722Z [[31merror[39m]: Error: This is a test error
+2024-10-04T17:11:42.889Z [[31merror[39m]: Error: This is a test error
+2024-10-04T17:11:43.062Z [[31merror[39m]: Error: This is a test error
+2024-10-04T17:11:43.277Z [[31merror[39m]: Error: This is a test error
+2024-10-05T09:50:29.927Z [[31merror[39m]: MySQL connection error: ER_ACCESS_DENIED_ERROR: Access denied for user ''@'localhost' (using password: NO)
+2024-10-05T09:52:24.627Z [[31merror[39m]: MySQL connection error: ER_ACCESS_DENIED_ERROR: Access denied for user ''@'localhost' (using password: NO)
+2024-10-05T12:59:04.622Z [[31merror[39m]: MySQL connection error: ER_ACCESS_DENIED_ERROR: Access denied for user ''@'localhost' (using password: NO)
+2024-10-05T13:00:04.597Z [[31merror[39m]: MySQL connection error: ER_ACCESS_DENIED_ERROR: Access denied for user ''@'localhost' (using password: NO)
+2024-10-05T13:04:14.833Z [[31merror[39m]: MySQL connection error: ER_ACCESS_DENIED_ERROR: Access denied for user ''@'localhost' (using password: NO)
+2024-10-06T14:33:57.089Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T14:33:58.128Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T14:33:58.606Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T14:33:58.779Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T14:33:58.954Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T14:33:59.122Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T14:33:59.300Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T14:33:59.535Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T14:33:59.755Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T14:34:15.740Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T17:11:26.410Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T17:11:27.128Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T17:11:27.328Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T17:11:27.513Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T17:11:27.726Z [[31merror[39m]: Error: jwt is not defined
+2024-10-06T17:21:14.570Z [[31merror[39m]: Error: jwt is not defined
+2024-10-07T15:22:09.135Z [[31merror[39m]: Error: jwt is not defined
+2024-10-07T15:22:09.916Z [[31merror[39m]: Error: jwt is not defined
+2024-10-07T15:22:10.120Z [[31merror[39m]: Error: jwt is not defined
+2024-10-07T15:22:10.299Z [[31merror[39m]: Error: jwt is not defined
+2024-10-07T15:22:10.488Z [[31merror[39m]: Error: jwt is not defined
+2024-10-07T15:22:10.673Z [[31merror[39m]: Error: jwt is not defined
+2024-10-07T15:22:10.891Z [[31merror[39m]: Error: jwt is not defined
+2024-10-07T17:28:01.803Z [[31merror[39m]: Error: jwt is not defined
+2024-10-07T17:28:02.659Z [[31merror[39m]: Error: jwt is not defined
+2024-10-07T17:28:03.169Z [[31merror[39m]: Error: jwt is not defined
+2024-10-07T17:28:03.374Z [[31merror[39m]: Error: jwt is not defined
+2024-10-07T17:28:03.602Z [[31merror[39m]: Error: jwt is not defined
+2024-10-07T17:28:03.825Z [[31merror[39m]: Error: jwt is not defined
+2024-10-07T17:28:05.318Z [[31merror[39m]: Error: jwt is not defined
+2024-10-09T05:25:05.115Z [[31merror[39m]: Error: jwt is not defined
+2024-10-09T05:25:11.837Z [[31merror[39m]: Error: jwt is not defined
+2024-10-09T05:25:12.935Z [[31merror[39m]: Error: jwt is not defined
+2024-10-09T05:37:04.241Z [[31merror[39m]: Error: jwt is not defined
+2024-10-09T05:37:09.503Z [[31merror[39m]: Error: jwt is not defined
+2024-10-09T05:37:58.658Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'toString')
+2024-10-09T05:38:06.905Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'toString')
+2024-10-09T05:49:52.019Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'toString')
+2024-10-09T05:51:16.111Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'toString')
+2024-10-09T06:08:38.070Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'toString')
+2024-10-09T06:09:36.809Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'toString')
+2024-10-09T06:10:33.645Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'toString')
+2024-10-09T06:10:41.648Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'toString')
+2024-10-09T06:12:41.929Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'toString')
+2024-10-09T06:13:44.679Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'toString')
+2024-10-09T06:19:14.181Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'toString')
+2024-10-09T06:19:16.366Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'toString')
+2024-10-09T06:19:17.744Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'toString')
+2024-10-09T06:19:22.809Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'toString')
+2024-10-15T05:17:55.168Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'id')
+2024-10-15T05:18:11.401Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'id')
+2024-10-15T05:18:11.416Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'id')
+2024-10-15T05:18:28.295Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'id')
+2024-10-15T05:18:28.303Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'id')
+2024-10-15T05:18:32.424Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'id')
+2024-10-15T05:18:32.437Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'id')
+2024-10-15T05:21:53.162Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'id')
+2024-10-15T05:25:48.856Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-15T05:25:48.869Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-15T05:25:53.601Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-15T05:25:53.631Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-15T05:31:21.016Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-15T05:31:21.025Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')

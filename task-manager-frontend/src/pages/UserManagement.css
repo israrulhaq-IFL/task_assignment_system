@@ -1,0 +1,47 @@
+.user-management {
+    margin-top: 20px;
+  }
+  
+  .user-management h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .user-management table {
+    margin-top: 20px;
+  }
+  
+  .user-management .table th,
+  .user-management .table td {
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  .user-management .table th {
+    background-color: #f8f9fa;
+  }
+  
+  .user-management .btn {
+    margin-right: 5px;
+  }
+  
+  .user-management form {
+    margin-top: 20px;
+  }
+  
+  .user-management form h2 {
+    margin-bottom: 20px;
+  }
+  
+  .user-management form .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .user-management form .form-control {
+    height: calc(2.25rem + 2px);
+    padding: 0.375rem 0.75rem;
+  }
+  
+  .user-management form .btn {
+    margin-right: 10px;
+  }

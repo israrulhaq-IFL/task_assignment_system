@@ -1,0 +1,67 @@
+/* Dashboard.css */
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto; /* Center the container */
+    width: 250%; /* Set the desired width as a percentage */
+    max-width: 1200px; /* Maximum width for larger screens */
+    min-height: 100vh; /* Ensure it takes at least the full viewport height */
+    height: auto; /* Allow height to adjust based on content */
+    position: relative; /* Ensure it stays centered */
+  left: 50%; /* Move it to the center */
+  transform: translateX(-50%); /* Center it horizontally */
+  }
+  
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .dashboard-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #343a40;
+  }
+  
+  .dashboard-header .btn-primary {
+    font-size: 16px;
+  }
+  
+  .dashboard-tabs {
+    margin-top: 20px;
+
+    width: 100%;
+  }
+  
+  .dashboard-tabs .nav-link {
+    font-size: 16px;
+    color: #495057;
+  }
+  
+  .dashboard-tabs .nav-link.active {
+    color: #007bff;
+  }
+  
+  .dashboard-alert {
+    margin-top: 20px;
+  }
+  
+  .dashboard-modal .modal-header {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .dashboard-modal .modal-title {
+    font-size: 20px;
+  }
+  
+  .dashboard-modal .modal-body {
+    padding: 20px;
+  }
