@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, memo, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Card, Button, Form, Dropdown, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Trash, EyeSlash } from 'react-bootstrap-icons';
@@ -206,6 +207,36 @@ const TaskCard = ({ task, onDelete, onStatusChange, isExpanded, onExpand, onHide
       </Modal>
     </Card>
   );
+};
+
+TaskCard.propTypes = {
+  task: PropTypes.shape({
+    task_id: PropTypes.number.isRequired,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    created_at: PropTypes.string.isRequired,
+    created_by: PropTypes.number.isRequired,
+    created_by_name: PropTypes.string,
+    target_date: PropTypes.string,
+    status: PropTypes.string,
+    assignees: PropTypes.string,
+    sub_departments: PropTypes.string,
+    interactions: PropTypes.arrayOf(PropTypes.shape({
+      interaction_id: PropTypes.number,
+      user_id: PropTypes.number,
+      interaction_type: PropTypes.string,
+      interaction_timestamp: PropTypes.string
+    }))
+  }).isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onStatusChange: PropTypes.func.isRequired,
+  isExpanded: PropTypes.bool.isRequired,
+  onExpand: PropTypes.func.isRequired,
+  onHide: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    user_id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired
+  }).isRequired
 };
 
 export default memo(TaskCard);
