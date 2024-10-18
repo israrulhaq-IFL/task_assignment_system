@@ -8,6 +8,10 @@ require('dotenv').config();
 
 const blacklist = []; // Define the blacklist array
 
+
+const DEFAULT_PROFILE_IMAGE = 'uploads/296fe121-5dfa-43f4-98b5-db50019738a7.jpg'; // Replace with the actual path or URL to the default avatar image
+
+
 // Generate Access Token
 const generateAccessToken = (user) => {
   return jwt.sign({ id: user.user_id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '24h' });
@@ -27,6 +31,7 @@ exports.register = (req, res) => {
   }
 
   const userData = req.body;
+  userData.profile_image = DEFAULT_PROFILE_IMAGE;
   //console.log('Registering user with data:', userData); // Log the user data
 
   bcrypt.hash(userData.password, 10, (err, hashedPassword) => {

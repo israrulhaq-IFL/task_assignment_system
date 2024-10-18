@@ -127,7 +127,6 @@ const Profile = ({ handleLogout }) => {
       <Row className="justify-content-md-center">
         <Col md="8">
           <div className="profile-box">
-            <h2 className="text-center">Profile</h2>
             {error && <Alert variant="danger">{error}</Alert>}
             {success && <Alert variant="success">{success}</Alert>}
             {formData.profileImage && (
