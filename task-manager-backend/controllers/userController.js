@@ -1,6 +1,11 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const db = require('../config/db');
+const bcrypt = require('bcrypt');
+const path = require('path');
+
+
+
 
 exports.getUserById = (req, res) => {
   const userId = req.user.user_id; // Use the user ID from the authenticated user
@@ -39,9 +44,121 @@ exports.getAllUsers = (req, res) => {
   });
 };
 
+exports.updatePassword = (req, res) => {
+  const userId = req.user.user_id; // Assuming user ID is available in req.user
+  const { password } = req.body;
+
+  if (!password) {
+    return res.status(400).json({ error: 'Password is required' });
+  }
+
+  bcrypt.hash(password, 10, (err, hash) => {
+    if (err) {
+      console.error('Error hashing password:', err.message);
+      return res.status(500).json({ error: 'Server error' });
+    }
+
+    User.updatePassword(userId, hash, (err) => {
+      if (err) {
+        console.error('Error updating password:', err.message);
+        return res.status(500).json({ error: 'Server error' });
+      }
+
+      res.status(200).json({ message: 'Password updated successfully' });
+    });
+  });
+};
+
+exports.updateProfileImage = (req, res) => {
+  const userId = req.user.user_id; // Assuming user ID is available in req.user
+  const profileImage = req.file ? req.file.path : null;
+
+  if (!profileImage) {
+    return res.status(400).json({ error: 'Profile image is required' });
+  }
+
+  User.updateProfileImage(userId, profileImage, (err) => {
+    if (err) {
+      console.error('Error updating profile image:', err.message);
+      return res.status(500).json({ error: 'Server error' });
+    }
+
+    res.status(200).json({ message: 'Profile image updated successfully' });
+  });
+};
+
+
+
+
+
+
+
+exports.getUserProfile = (req, res) => {
+console.log('Fetching user profile'); // Log the user ID
+
+  const userId = req.user.user_id; // Assuming user ID is available in req.user
+
+  User.getUserProfile(userId, (err, profileData) => {
+    if (err) {
+      console.error('Error fetching user profile:', err.message);
+      return res.status(500).json({ error: 'Server error' });
+    }
+    if (!profileData) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    console.log('User profile data:', profileData); // Log the user profile data
+
+    res.status(200).json(profileData);
+  });
+};
+
+
+
+
+
+
+exports.updateUserProfile = async (req, res) => {
+  const userId = req.user.user_id; // Assuming user ID is available in req.user
+  const userData = req.body;
+
+  console.log('Updating profile for user with ID:', userId); // Log the user ID
+  console.log('User data:', userData); // Log the user data
+
+  // Handle password update
+  if (userData.password) {
+    const salt = await bcrypt.genSalt(10);
+    userData.password = await bcrypt.hash(userData.password, salt);
+  }
+
+  // Handle profile image upload
+  if (req.file) {
+    const imageUrl = path.join('uploads', req.file.filename);
+    userData.profile_image = imageUrl;
+  }
+
+  User.update(userId, userData, (err, result) => {
+    if (err) {
+      console.error('Error updating user profile:', err.message);
+      return res.status(500).json({ error: err.message });
+    }
+
+    console.log('User profile updated:', result); // Log the update result
+    res.status(200).json({ message: 'Profile updated successfully', user: result });
+  });
+};
+
+
+
+
+
+
 exports.updateUser = (req, res) => {
   const userId = req.params.id;
   const userData = req.body;
+
+ 
+
 
   console.log('Updating user with ID:', userId); // Log the user ID
   console.log('User data:', userData); // Log the user data

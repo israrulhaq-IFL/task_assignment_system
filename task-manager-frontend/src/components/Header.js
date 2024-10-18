@@ -1,9 +1,34 @@
-import React from 'react';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Navbar, Nav, Container, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+import './Header.css';
+
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
 
 const Header = ({ isLoggedIn, handleLogout, userRole }) => {
+  const [profileImage, setProfileImage] = useState('');
+
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const profileData = response.data;
+        setProfileImage(profileData.profile_image ? `${API_BASE_URL}/${profileData.profile_image}` : '');
+      } catch (error) {
+        console.error('Error fetching profile image:', error);
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchProfileImage();
+    }
+  }, [isLoggedIn]);
+
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
@@ -30,7 +55,13 @@ const Header = ({ isLoggedIn, handleLogout, userRole }) => {
                 {userRole === 'Team Member' && (
                   <Nav.Link as={Link} to="/dashboard">Team Member Dashboard</Nav.Link>
                 )}
+
                 <Nav.Link href="#" onClick={handleLogout}>Logout</Nav.Link>
+                {profileImage && (
+                  <Nav.Link as={Link} to="/profile">
+                    <Image src={profileImage} roundedCircle width="40" height="40" className="ml-3" />
+                  </Nav.Link>
+                )}
               </>
             )}
             {!isLoggedIn && (

@@ -12,6 +12,7 @@ import SubDepartmentManagement from './pages/SubDepartmentManagement'; // Import
 import UserManagement from './pages/UserManagement'; // Import the UserManagement page
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
+import Profile from './components/Profile'; // Import the Profile component
 import { Container, Row, Col } from 'react-bootstrap';
 import { jwtDecode } from 'jwt-decode'; // Corrected import statement
 import withRole from './hoc/withRole'; // Import the withRole HOC
@@ -170,12 +171,15 @@ function App() {
                       <Route path="/departments" element={<DepartmentManagementWithRole />} />
                       <Route path="/sub-departments" element={<SubDepartmentManagementWithRole />} />
                       <Route path="/user-management" element={<UserManagementWithRole />} />
+                      <Route path="/profile" element={<Profile user={user} handleLogout={handleLogout} />} />
                       <Route path="*" element={<Navigate to="/dashboard" />} />
                     </Routes>
                   ) : (
                     user.department_id && user.sub_department_id ? (
                       <Routes>
                         <Route path="/dashboard/:tab" element={renderDashboard()} />
+                        <Route path="/profile" element={<Profile user={user} handleLogout={handleLogout}/>} /> {/* Add profile route */}
+
                         <Route path="*" element={<Navigate to="/dashboard/my-tasks" />} />
                       </Routes>
                     ) : (

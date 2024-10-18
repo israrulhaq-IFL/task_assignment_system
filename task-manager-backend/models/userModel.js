@@ -29,6 +29,17 @@ const User = {
       return callback(null, results);
     });
   },
+
+  updatePassword: (userId, password, callback) => {
+    const sql = 'UPDATE users SET password = ? WHERE user_id = ?';
+    db.query(sql, [password, userId], callback);
+  },
+  updateProfileImage: (userId, profileImage, callback) => {
+    const sql = 'UPDATE users SET profile_image = ? WHERE user_id = ?';
+    db.query(sql, [profileImage, userId], callback);
+  },
+
+
   update: (userId, userData, callback) => {
     if (userData.password) {
       bcrypt.hash(userData.password, 10, (err, hash) => {
@@ -92,7 +103,25 @@ getUsersForHOD: (callback) => {
     console.log('Query result for HOD:', results); // Debugging log
     callback(null, results); // Return the full results array
   });
+},
+getUserProfile: (userId, callback) => {
+  const query = `
+      SELECT u.user_id, u.name, u.email, u.role, u.profile_image,
+             d.department_name, sd.sub_department_name,
+             m.name AS manager_name, h.name AS hod_name
+      FROM users u
+      LEFT JOIN departments d ON u.department_id = d.department_id
+      LEFT JOIN sub_departments sd ON u.sub_department_id = sd.sub_department_id
+      LEFT JOIN users m ON sd.manager_id = m.user_id
+      LEFT JOIN users h ON d.hod_id = h.user_id
+      WHERE u.user_id = ?`;
+  db.query(query, [userId], (err, results) => {
+    if (err) return callback(err);
+    callback(null, results[0]);
+  });
 }
+
+
 };
 
 

@@ -1,0 +1,24 @@
+.navbar {
+    background-color: #343a40; /* Dark background color */
+  }
+  
+  .navbar-brand {
+    color: #ffffff; /* White text color */
+  }
+  
+  .navbar-nav .nav-link {
+    color: #ffffff; /* White text color */
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: #cccccc; /* Light gray text color on hover */
+  }
+  
+  .navbar-nav .profile-image {
+    margin-left: 15px;
+    border: 2px solid #ffffff; /* White border around the profile image */
+  }
+  
+  .navbar-nav .profile-image:hover {
+    border-color: #cccccc; /* Light gray border color on hover */
+  }
