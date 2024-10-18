@@ -4,75 +4,50 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import CustomUploadAdapterPlugin from './CustomUploadAdapter';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
 
-const TaskForm = ({ addTask, role }) => {
+const TaskForm = ({ addTask, role, user }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [status, setStatus] = useState('pending');
     const [priority, setPriority] = useState('medium');
     const [assignedTo, setAssignedTo] = useState([]);
     const [users, setUsers] = useState([]);
-    const [user, setUser] = useState(null);
     const [targetDate, setTargetDate] = useState(new Date());
 
     useEffect(() => {
-        const user_id = localStorage.getItem('user_id');
-        const token = localStorage.getItem('accessToken');
-        if (user_id && token) {
-            const fetchUserDetails = async () => {
-                try {
-                    const config = {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    };
-                    const response = await axios.get(`${API_BASE_URL}/api/users/${user_id}`, config);
-                    const userDetails = response.data;
-                    setUser(userDetails);
-                } catch (error) {
-                    console.error('Error fetching user details:', error);
-                }
-            };
-
-            fetchUserDetails();
-        }
-    }, []);
-
-    useEffect(() => {
-        if (user) {
-            const fetchUsers = async () => {
-                try {
-                    const token = localStorage.getItem('accessToken');
-                    const config = {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                             'Cache-Control': 'no-cache'
-                        }
-                    };
-                    let response;
-                    if (role === 'Manager') {
-                        response = await axios.get(`${API_BASE_URL}/api/users/manager?manager_id=${user.user_id}`, config);
-                    } else if (role === 'team-member') {
-                        response = await axios.get(`${API_BASE_URL}/api/users/team-member?department_id=${user.department_id}`, config);
-                    } else if (role === 'hod') {
-                        response = await axios.get(`${API_BASE_URL}/api/users/hod`, config);
+        const fetchUsers = async () => {
+            try {
+                const token = localStorage.getItem('accessToken');
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Cache-Control': 'no-cache'
                     }
-                    if (response && response.data && response.data.users) {
-                        setUsers(response.data.users);
-                    } else {
-                        console.error('Unexpected response structure:', response);
-                    }
-                } catch (error) {
-                    console.error('Error fetching users:', error);
+                };
+                let response;
+                if (role === 'Manager') {
+                    response = await axios.get(`${API_BASE_URL}/api/users/manager?manager_id=${user.user_id}`, config);
+                } else if (role === 'team-member') {
+                    response = await axios.get(`${API_BASE_URL}/api/users/team-member?department_id=${user.department_id}`, config);
+                } else if (role === 'hod') {
+                    response = await axios.get(`${API_BASE_URL}/api/users/hod`, config);
                 }
-            };
-    
-            fetchUsers();
-        }
+                if (response && response.data && response.data.users) {
+                    setUsers(response.data.users);
+                } else {
+                    console.error('Unexpected response structure:', response);
+                }
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        };
+
+        fetchUsers();
     }, [user, role]);
 
     const handleSubmit = (e) => {
@@ -111,10 +86,16 @@ const TaskForm = ({ addTask, role }) => {
             </Form.Group>
             <Form.Group controlId="formDescription">
                 <Form.Label>Description:</Form.Label>
-                <ReactQuill
-                    value={description}
-                    onChange={setDescription}
-                    theme="snow"
+                <CKEditor
+                    editor={ClassicEditor}
+                    data={description}
+                    config={{
+                        extraPlugins: [CustomUploadAdapterPlugin]
+                    }}
+                    onChange={(event, editor) => {
+                        const data = editor.getData();
+                        setDescription(data);
+                    }}
                 />
             </Form.Group>
             <Form.Group controlId="formStatus">

@@ -10,9 +10,20 @@ router.put('/:Id/target-date', authMiddleware, taskController.updateTaskTargetDa
 
 
 
+router.get('/manager/my-tasks', authMiddleware, taskController.getMyTasksForManager);
+router.get('/manager/other-tasks', authMiddleware, taskController.getOtherTasksForManager);
+router.get('/manager', authMiddleware, taskController.getAllTasksForManager);
 
-router.get('/manager', authMiddleware, taskController.getTasksForManager);
+
+
+
+router.get('/team-member/my-tasks', authMiddleware, taskController.getMyTasksForTeamMember);
+router.get('/team-member/other-tasks', authMiddleware, taskController.getOtherTasksForTeamMember);
 router.get('/team-member', authMiddleware, taskController.getTasksForTeamMember);
+
+
+
+
 router.put('/:id/status', taskController.updateTaskStatus);
 router.post('/', taskController.createTask);
 router.get('/:id', taskController.getTaskById);

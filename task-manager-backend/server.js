@@ -9,12 +9,14 @@ const userRoutes = require('./routes/userRoutes'); // Import user routes
 const logger = require('./config/logger'); // Import the logger
 const departmentRoutes = require('./routes/departmentRoutes'); // Import department routes
 const subDepartmentRoutes = require('./routes/subDepartmentRoutes'); // Import sub-department routes
+const uploadRoutes = require('./routes/uploadRoutes'); // Import the upload routes
 
 const app = express();
 const port = 3001;
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use('/uploads', express.static('uploads')); // Serve the uploads directory
 
 // Middleware to log incoming requests
 app.use((req, res, next) => {
@@ -27,6 +29,8 @@ app.use('/api/auth', authRoutes);
 
 // Use task routes
 app.use('/api/tasks', taskRoutes);
+app.use('/api/upload', uploadRoutes); // Use the upload routes
+
 
 // Use user routes
 app.use('/api/users', userRoutes);
@@ -35,6 +39,8 @@ app.use('/api/users', userRoutes);
 app.use('/api', departmentRoutes);
 
 app.use('/api', subDepartmentRoutes);
+
+
 
 app.get('/', (req, res) => {
   res.send('Task Manager API');

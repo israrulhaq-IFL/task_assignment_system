@@ -175,8 +175,8 @@ function App() {
                   ) : (
                     user.department_id && user.sub_department_id ? (
                       <Routes>
-                        <Route path="/dashboard" element={renderDashboard()} />
-                        <Route path="*" element={<Navigate to="/dashboard" />} />
+                        <Route path="/dashboard/:tab" element={renderDashboard()} />
+                        <Route path="*" element={<Navigate to="/dashboard/my-tasks" />} />
                       </Routes>
                     ) : (
                       <div>

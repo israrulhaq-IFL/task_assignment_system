@@ -205,26 +205,40 @@ exports.updateTaskTargetDate = (req, res) => {
   });
 };
 
+exports.getAllTasksForManager = (req, res) => {
+  const managerId = req.user.user_id;
+  const subDepartmentId = req.user.sub_department_id;
 
-exports.getTasksForManager = (req, res) => {
-  console.log('Request user data:', req.user); // Log the req.user object
-
-  if (!req.user) {
-    return res.status(401).json({ error: 'User not authenticated' });
-  }
-
-  const managerId = req.user.user_id; // Use id instead of user_id
-  const subDepartmentId = req.user.sub_department_id; // Assuming sub-department ID is available in req.user
-
-  console.log('Fetching tasks for manager:', managerId);
-  console.log('Sub-department ID:', subDepartmentId); 
   Task.getTasksForManager(managerId, subDepartmentId, (err, result) => {
-   // Log the manager ID
     if (err) {
-      console.error('Error fetching tasks for manager:', err);
       return res.status(500).json({ error: err.message });
     }
-   console.log('Fetched tasks for manger:', result); // Log the fetched tasks
+    res.status(200).json(result);
+  });
+};
+
+exports.getMyTasksForManager = (req, res) => {
+  const managerId = req.user.user_id;
+  const subDepartmentId = req.user.sub_department_id;
+  console.log('my task manager triggered'); 
+  Task.getMyTasksForManager(managerId, subDepartmentId, (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(200).json(result);
+  });
+};
+
+exports.getOtherTasksForManager = (req, res) => {
+  const managerId = req.user.user_id;
+  const subDepartmentId = req.user.sub_department_id;
+
+
+  console.log('opther task manager triggered'); // Log the req.user object
+  Task.getOtherTasksForManager(managerId, subDepartmentId, (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
     res.status(200).json(result);
   });
 };
@@ -249,6 +263,46 @@ exports.getTasksForTeamMember = (req, res) => {
     res.status(200).json(result);
   });
 };
+
+
+exports.getMyTasksForTeamMember = (req, res) => {
+  const userId = req.user.user_id;
+  const subDepartmentId = req.user.sub_department_id;
+
+  Task.getMyTasksForTeamMember(userId, subDepartmentId, (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(200).json(result);
+  });
+};
+
+exports.getOtherTasksForTeamMember = (req, res) => {
+  const userId = req.user.user_id;
+  const subDepartmentId = req.user.sub_department_id;
+
+  Task.getOtherTasksForTeamMember(userId, subDepartmentId, (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(200).json(result);
+  });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 exports.logInteraction = (req, res) => {
   //console.log('log interaction hit , Request body:', req.body); // Log the request body
