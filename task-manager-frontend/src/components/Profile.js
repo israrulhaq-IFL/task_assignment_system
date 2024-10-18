@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, Button, Container, Row, Col, Alert, Image } from 'react-bootstrap';
-
-import './Profile.css'; // Import the CSS file
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faEdit, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { PersonCircle } from 'react-bootstrap-icons'; // Import a placeholder icon
+import './Profile.css'; // Import the CSS file
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
 
@@ -27,7 +27,7 @@ const Profile = ({ handleLogout }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showPasswordUpdate, setShowPasswordUpdate] = useState(false);
- 
+
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
@@ -129,23 +129,32 @@ const Profile = ({ handleLogout }) => {
           <div className="profile-box">
             {error && <Alert variant="danger">{error}</Alert>}
             {success && <Alert variant="success">{success}</Alert>}
-            {formData.profileImage && (
-              <div className="text-center mb-3 profile-image-container">
-                <Image src={formData.profileImage} roundedCircle width="150" height="150" className="profile-image" />
-                <FontAwesomeIcon
-                  icon={faEdit}
-                  className="edit-icon"
-                  onClick={() => document.getElementById('profileImageInput').click()}
-                />
-                <Form.Control
-                  type="file"
-                  id="profileImageInput"
-                  name="profileImage"
-                  onChange={handleImageChange}
-                  style={{ display: 'none' }}
-                />
-              </div>
-            )}
+            <div className="text-center mb-3 profile-image-container">
+              {formData.profileImage ? (
+                <>
+                  <Image src={formData.profileImage} roundedCircle width="150" height="150" className="profile-image" />
+                  <FontAwesomeIcon
+                    icon={faEdit}
+                    className="edit-icon"
+                    onClick={() => document.getElementById('profileImageInput').click()}
+                  />
+                </>
+              ) : (
+                <>
+                  <PersonCircle size={150} className="profile-placeholder" />
+                  <Button variant="primary" onClick={() => document.getElementById('profileImageInput').click()}>
+                    <FontAwesomeIcon icon={faUpload} /> Upload Image
+                  </Button>
+                </>
+              )}
+              <Form.Control
+                type="file"
+                id="profileImageInput"
+                name="profileImage"
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
+              />
+            </div>
             <Form>
               <Form.Group controlId="formName">
                 <Form.Label>Name</Form.Label>

@@ -44,25 +44,13 @@
 
 .task-count {
   font-size: 1rem;
-  padding: 5px 10px;
-  border-radius: 50%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .task-count.primary {
-  background-color: #032447;
-  color: white;
+color: rgb(87, 86, 86);
 }
 
-.task-count.warning {
-  background-color: #ffc107;
-  color: white;
-}
-
-.task-count.success {
-  background-color: #28a745;
-  color: white;
-}
 
 .task-column .card {
   margin-bottom: 10px;

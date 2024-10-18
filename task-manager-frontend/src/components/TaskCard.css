@@ -1,30 +1,42 @@
 .task-card {
   position: relative;
   cursor: pointer;
-  transition: max-height 0.5s ease;
+  transition: max-height 0.5s ease, box-shadow 0.3s ease;
   overflow: hidden;
   max-height: 150px; /* Adjust based on the initial content height */
   width: 350px; /* Fixed width for all task cards */
+  background-color: #ffffff; /* White background for the card */
+  border: 1px solid #4c96f7; /* Light border */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin-bottom: 20px; /* Space between cards */
+  padding: 5px; /* Padding inside the card */
+}
+
+.task-card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Slightly larger shadow on hover */
 }
 
 .task-card.expanded {
   max-height: none; /* Allow the card to expand to fit content */
   overflow: visible; /* Ensure all content is visible */
 }
+.task-card-created-at{
+  color: #6c757d; /* Gray color for the created at text */
+  font-size: 0.9rem;   
+}
+
 
 .task-card-title {
-  color: rgb(10, 0, 0);
-  padding: 1px 5px;
-  border-radius: 5px;
-  font-size: 1.2rem;
+  color: #333; /* Darker color for the title */
+  font-size: 1.4rem; /* Space below the title */
 }
 
 .task-card-description {
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 5px;
-  margin-top: 10px;
-  max-height: 50px; /* Limit the height of the description in the initial view */
+  border: 0.5px solid #ddd;
+  padding: 5px;
+  border-radius: 10px;
+  max-height: 40px; /* Limit the height of the description in the initial view */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -36,9 +48,9 @@
 }
 
 .task-card-created-by {
-  color: #28a745; /* Green color for created by */
+  color: #697d92; /* Blue color for created by */
   font-weight: bold;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .status-dot {
@@ -53,20 +65,9 @@
 }
 
 .status-dot.blue {
-  background-color: blue;
+  background-color: rgb(0, 149, 255);
 }
 
-.status-dot.orange {
-  background-color: orange;
-}
-
-.status-dot.green {
-  background-color: green;
-}
-
-.status-dot.dim {
-  background-color: transparent;
-}
 
 .task-card-dropdown {
   position: absolute;
@@ -106,3 +107,53 @@
   color: #6c757d;
 }
 
+/* Additional styles for better layout */
+.task-card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.task-card-footer .task-card-status {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.task-card-footer .task-card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.task-card-footer .task-card-actions button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #007bff;
+  font-size: 1rem;
+}
+
+.task-card-footer .task-card-actions button:hover {
+  color: #0056b3;
+}
+
+
+/* Styles for the task details modal */
+.task-details-modal .modal-dialog {
+  max-width: 80%; /* Adjust the width as needed */
+}
+
+.task-details-modal .modal-body {
+  max-height: 70vh; /* Adjust the height as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.task-details-modal img {
+  max-width: 100%; /* Ensure images fit within the modal */
+  height: auto; /* Maintain aspect ratio */
+}

@@ -31,7 +31,7 @@ exports.register = (req, res) => {
   }
 
   const userData = req.body;
-  userData.profile_image = DEFAULT_PROFILE_IMAGE;
+  //userData.profile_image = DEFAULT_PROFILE_IMAGE;
   //console.log('Registering user with data:', userData); // Log the user data
 
   bcrypt.hash(userData.password, 10, (err, hashedPassword) => {

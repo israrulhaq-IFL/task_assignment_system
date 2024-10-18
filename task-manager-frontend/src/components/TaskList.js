@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TaskCard from './TaskCard';
-import { Badge, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Eye } from 'react-bootstrap-icons';
@@ -67,7 +67,7 @@ const TaskList = ({ tasks, onDelete, onStatusChange, user, canDragAndDrop }) => 
     const [, ref] = useDrag({
       type: ItemTypes.TASK,
       item: { taskId: task.task_id, status },
-      canDrag: canDragAndDrop, // Disable drag if canDragAndDrop is false
+      canDrag: canDragAndDrop && !task.isDragging, // Disable drag if canDragAndDrop is false or if the task is being dragged
     });
 
     return (
@@ -80,6 +80,7 @@ const TaskList = ({ tasks, onDelete, onStatusChange, user, canDragAndDrop }) => 
           onExpand={() => handleExpand(task.task_id, status)}
           onHide={(taskId) => handleHideTask(taskId, status)}
           user={user} // Pass the user prop to TaskCard
+          canDragAndDrop={canDragAndDrop}
         />
       </div>
     );
@@ -96,8 +97,7 @@ const TaskList = ({ tasks, onDelete, onStatusChange, user, canDragAndDrop }) => 
     return (
       <div ref={ref} className="task-column">
         <div className="task-column-header">
-          <h3>{status.charAt(0).toUpperCase() + status.slice(1)}</h3>
-          <Badge pill className={`task-count ${status.replace(' ', '-')} shadow-sm`}>{children.length}</Badge>
+          <h3>{status.charAt(0).toUpperCase() + status.slice(1)} {children.length}</h3>
           <OverlayTrigger placement="top" overlay={<Tooltip>Unhide All</Tooltip>}>
             <Button variant="link" onClick={() => handleUnhideAllTasks(status)} disabled={hiddenTasks.length === 0}>
               <Eye />

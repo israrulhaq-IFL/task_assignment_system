@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Container, Image, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { PersonCircle, PersonFill, PersonBadge } from 'react-bootstrap-icons'; // Import icons
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import './Header.css';
@@ -30,6 +32,13 @@ const Header = ({ isLoggedIn, handleLogout, userRole }) => {
       fetchProfileData();
     }
   }, [isLoggedIn]);
+
+ // Function to get a random icon
+ const getRandomIcon = () => {
+  const icons = [<PersonCircle />, <PersonFill />, <PersonBadge />];
+  return icons[Math.floor(Math.random() * icons.length)];
+};
+
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
@@ -63,18 +72,29 @@ const Header = ({ isLoggedIn, handleLogout, userRole }) => {
               <Nav.Link as={Link} to="/login">Login</Nav.Link>
             )}
           </Nav>
-          {isLoggedIn && profileImage && (
+          {isLoggedIn && (
             <Nav className="ml-auto align-items-center">
-              <NavDropdown
+              {profileImage ? (
+                <NavDropdown
                 title={
-                  <Image src={profileImage} roundedCircle width="40" height="40" className="profile-image" />
+                  profileImage ? (
+                    <Image src={profileImage} roundedCircle width="40" height="40" className="profile-image" />
+                  ) : (
+                    <div className="profile-icon">{getRandomIcon()}</div>
+                  )
                 }
                 id="profile-dropdown"
                 alignRight
               >
-                <NavDropdown.Item as={Link} to="/profile">Profile</NavDropdown.Item>
-                <NavDropdown.Item href="#" onClick={handleLogout}>Logout</NavDropdown.Item>
-              </NavDropdown>
+                  <NavDropdown.Item as={Link} to="/profile">Profile</NavDropdown.Item>
+                  <NavDropdown.Item href="#" onClick={handleLogout}>Logout</NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                <>
+                  <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
+                  <Nav.Link href="#" onClick={handleLogout}>Logout</Nav.Link>
+                </>
+              )}
               <span className="text-white ml-2">{userName} ({userRole})</span>
             </Nav>
           )}

@@ -15,12 +15,18 @@
 }
 
 .navbar-nav .profile-image {
-  margin-left: 30px;
+  margin-left: 15px;
   border: 2px solid #ffffff; /* White border around the profile image */
 }
 
 .navbar-nav .profile-image:hover {
   border-color: #cccccc; /* Light gray border color on hover */
+}
+
+.navbar-nav .profile-icon {
+  margin-left: 15px;
+  font-size: 40px;
+  color: #ffffff; /* White color for the icon */
 }
 
 .navbar-nav .ml-2 {
@@ -33,4 +39,25 @@
 
 .navbar-nav .mr-2 {
   margin-right: 0.5rem;
+}
+
+/* New CSS to push profile image to the right */
+.navbar-nav.ml-auto {
+  margin-left: auto;
+}
+
+.navbar-nav.align-items-center {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-nav .profile-container {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.navbar-nav .profile-container .profile-info {
+  margin-right: 10px;
+  color: #ffffff;
 }
