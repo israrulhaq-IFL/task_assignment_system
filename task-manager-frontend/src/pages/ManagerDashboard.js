@@ -45,8 +45,8 @@ const ManagerDashboard = () => {
         console.log('Fetched tasks:', response.data); // Log the fetched tasks
 
         const tasks = response.data;
-        const tasksAssignedToMe = tasks.filter(task => task.assignees.includes(user?.name));
-        const tasksAssignedToTeam = tasks.filter(task => !task.assignees.includes(user?.name));
+        const tasksAssignedToMe = tasks?.filter(task => task.assignees?.includes(user?.name));
+        const tasksAssignedToTeam = tasks?.filter(task => !task.assignees?.includes(user?.name));
         setTasksAssignedToMe(tasksAssignedToMe);
         setTasksAssignedToTeam(tasksAssignedToTeam);
       } catch (error) {

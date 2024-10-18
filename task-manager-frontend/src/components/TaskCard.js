@@ -108,10 +108,11 @@ const TaskCard = ({ task, onDelete, onStatusChange, isExpanded, onExpand, onHide
   const isAssignedToUser = user ? assignees.includes(user.name) : false;
   const isCreatedByUser = user ? task.created_by === user.user_id : false;
 
-  // Find the latest interaction
-  const latestInteraction = task.interactions.reduce((latest, interaction) => {
+  // Ensure interactions is an array and find the latest interaction
+  const interactions = Array.isArray(task.interactions) ? task.interactions : [];
+  const latestInteraction = interactions.reduce((latest, interaction) => {
     return new Date(interaction.interaction_timestamp) > new Date(latest.interaction_timestamp) ? interaction : latest;
-  }, task.interactions[0]);
+  }, interactions[0]);
 
   return (
     <Card className={`mb-3 task-card ${isExpanded ? 'expanded' : ''}`} onClick={handleCardClick} ref={cardRef}>
