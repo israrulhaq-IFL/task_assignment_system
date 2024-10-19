@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Card, Button, Form, Dropdown, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { Trash, EyeSlash,} from 'react-bootstrap-icons';
+import { Trash, EyeSlash } from 'react-bootstrap-icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './TaskCard.css';
@@ -132,10 +132,11 @@ const TaskCard = ({ task, onDelete, onStatusChange, isExpanded, onExpand, onHide
   const isAssignedToUser = user ? assignees.includes(user.name) : false;
   const isCreatedByUser = user ? task.created_by === user.user_id : false;
 
-  // Find the latest interaction
-  const latestInteraction = (task.interactions || []).reduce((latest, interaction) => {
-    return new Date(interaction.interaction_timestamp) > new Date(latest.interaction_timestamp) ? interaction : latest;
-  }, (task.interactions || [])[0]);
+  // Filter and sort interactions to get the latest two status change interactions
+  const latestInteractions = (task.interactions || [])
+    .filter(interaction => interaction.interaction_type === 'status_change')
+    .sort((a, b) => new Date(b.interaction_timestamp) - new Date(a.interaction_timestamp))
+    .slice(0, 2);
 
   return (
     <>
@@ -207,13 +208,15 @@ const TaskCard = ({ task, onDelete, onStatusChange, isExpanded, onExpand, onHide
                 </Form.Control>
               )}
               <div>
-                <strong>Latest Interaction:</strong>
-                {latestInteraction ? (
-                  <p>
-                    {latestInteraction.interaction_type} at {new Date(latestInteraction.interaction_timestamp).toLocaleString()}
-                  </p>
+                <strong>Latest Interactions:</strong>
+                {latestInteractions.length > 0 ? (
+                  latestInteractions.map((interaction, index) => (
+                    <p key={index}>
+                      {interaction.interaction_type} by {interaction.user_name} at {new Date(interaction.interaction_timestamp).toLocaleString()}
+                    </p>
+                  ))
                 ) : (
-                  <p>No interactions</p>
+                  <p>No status change interactions</p>
                 )}
               </div>
             </>
@@ -250,7 +253,11 @@ const TaskCard = ({ task, onDelete, onStatusChange, isExpanded, onExpand, onHide
           <p><strong>Sub-Departments:</strong> {subDepartments.join(', ') || 'N/A'}</p>
           <p><strong>Status:</strong> {task.status}</p>
           <p><strong>Target Date:</strong> {new Date(targetDate).toLocaleDateString()}</p>
-          <p><strong>Latest Interaction:</strong> {latestInteraction ? `${latestInteraction.interaction_type} at ${new Date(latestInteraction.interaction_timestamp).toLocaleString()}` : 'No interactions'}</p>
+          <p><strong>Latest Interactions:</strong> {latestInteractions.length > 0 ? latestInteractions.map((interaction, index) => (
+            <p key={index}>
+              {interaction.interaction_type} by {interaction.user_name} at {new Date(interaction.interaction_timestamp).toLocaleString()}
+            </p>
+          )) : 'No status change interactions'}</p>
         </Modal.Body>
       </Modal>
     </>
@@ -272,6 +279,7 @@ TaskCard.propTypes = {
     interactions: PropTypes.arrayOf(PropTypes.shape({
       interaction_id: PropTypes.number,
       user_id: PropTypes.number,
+      user_name: PropTypes.string, // Ensure user_name is included
       interaction_type: PropTypes.string,
       interaction_timestamp: PropTypes.string
     }))

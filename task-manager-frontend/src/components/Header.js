@@ -95,7 +95,7 @@ const Header = ({ isLoggedIn, handleLogout, userRole }) => {
                   <Nav.Link href="#" onClick={handleLogout}>Logout</Nav.Link>
                 </>
               )}
-              <span className="text-white ml-2">{userName} ({userRole})</span>
+              <span className="text-white ml-2">{userName}-{userRole}</span>
             </Nav>
           )}
         </Navbar.Collapse>
