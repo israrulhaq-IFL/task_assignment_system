@@ -181,7 +181,7 @@ const TaskCard = ({ task, onDelete, onStatusChange, isExpanded, onExpand, onHide
                   <DatePicker selected={targetDate} onChange={handleTargetDateChange} disabled={!isAssignedToUser} />
                 </div>
               </div>
-              <Dropdown onToggle={() => setShowMenu(!showMenu)} show={showMenu} className="task-card-dropdown">
+              <Dropdown align="right" onToggle={() => setShowMenu(!showMenu)} show={showMenu} className="task-card-dropdown">
                 <Dropdown.Toggle variant="link" id="dropdown-basic" className="task-card-dropdown-toggle">
                   ⋮
                 </Dropdown.Toggle>
@@ -210,11 +210,11 @@ const TaskCard = ({ task, onDelete, onStatusChange, isExpanded, onExpand, onHide
               <div>
                 <strong>Latest Interactions:</strong>
                 {latestInteractions.length > 0 ? (
-                  latestInteractions.map((interaction, index) => (
-                    <p key={index}>
-                      {interaction.interaction_type} by {interaction.user_name} at {new Date(interaction.interaction_timestamp).toLocaleString()}
-                    </p>
-                  ))
+              latestInteractions.map((interaction, index) => (
+                <p key={interaction.interaction_id}>
+                  {interaction.interaction_type} by {interaction.user_name} at {new Date(interaction.interaction_timestamp).toLocaleString()}
+                </p>
+              ))
                 ) : (
                   <p>No status change interactions</p>
                 )}

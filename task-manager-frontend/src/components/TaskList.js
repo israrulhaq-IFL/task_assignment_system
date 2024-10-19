@@ -66,14 +66,25 @@ const TaskList = ({ tasks, onDelete, onStatusChange, user, canDragAndDrop }) => 
   const Task = ({ task, index, status }) => {
     const [, ref] = useDrag({
       type: ItemTypes.TASK,
-      item: { taskId: task.task_id, status },
+      item: { taskId: task.task_id || task.id, status },
       canDrag: canDragAndDrop && !task.isDragging, // Disable drag if canDragAndDrop is false or if the task is being dragged
     });
-
+  
+    if (!task.task_id && !task.id) {
+      console.error('Task ID is undefined for task:', task);
+      return null;
+    }
+  
+    // Provide a default value for created_at if it is missing
+    const taskWithDefaults = {
+      ...task,
+      created_at: task.created_at || new Date().toISOString(),
+    };
+  
     return (
-      <div ref={canDragAndDrop ? ref : null}>
+      <div ref={canDragAndDrop ? ref : null} key={task.task_id || task.id}>
         <TaskCard
-          task={task}
+          task={taskWithDefaults}
           onDelete={onDelete}
           onStatusChange={handleStatusChange}
           isExpanded={status === 'pending' ? expandedPendingTaskId === task.task_id : status === 'in progress' ? expandedInProgressTaskId === task.task_id : expandedCompletedTaskId === task.task_id}
@@ -85,15 +96,14 @@ const TaskList = ({ tasks, onDelete, onStatusChange, user, canDragAndDrop }) => 
       </div>
     );
   };
-
   const Column = ({ status, children }) => {
     const [, ref] = useDrop({
       accept: ItemTypes.TASK,
       drop: (item) => moveTask(item.taskId, status),
     });
-
+  
     const hiddenTasks = status === 'pending' ? hiddenPendingTasks : status === 'in progress' ? hiddenInProgressTasks : status === 'completed' ? hiddenCompletedTasks : [];
-
+  
     return (
       <div ref={ref} className="task-column">
         <div className="task-column-header">
@@ -108,32 +118,30 @@ const TaskList = ({ tasks, onDelete, onStatusChange, user, canDragAndDrop }) => 
       </div>
     );
   };
-
   const pendingTasks = taskList.filter(task => task.status === 'pending' && !hiddenPendingTasks.includes(task.task_id));
   const inProgressTasks = taskList.filter(task => task.status === 'in progress' && !hiddenInProgressTasks.includes(task.task_id));
   const completedTasks = taskList.filter(task => task.status === 'completed' && !hiddenCompletedTasks.includes(task.task_id));
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="task-list-container">
-        <Column status="pending">
-          {pendingTasks.map((task, index) => (
-            <Task key={task.task_id} task={task} index={index} status="pending" />
-          ))}
-        </Column>
-        <Column status="in progress">
-          {inProgressTasks.map((task, index) => (
-            <Task key={task.task_id} task={task} index={index} status="in progress" />
-          ))}
-        </Column>
-        <Column status="completed">
-          {completedTasks.map((task, index) => (
-            <Task key={task.task_id} task={task} index={index} status="completed" />
-          ))}
-        </Column>
-      </div>
-    </DndProvider>
-  );
+    <div className="task-list-container">
+      <Column status="pending">
+        {pendingTasks.map((task, index) => (
+          <Task key={task.task_id || task.id} task={task} index={index} status="pending" />
+        ))}
+      </Column>
+      <Column status="in progress">
+        {inProgressTasks.map((task, index) => (
+          <Task key={task.task_id || task.id} task={task} index={index} status="in progress" />
+        ))}
+      </Column>
+      <Column status="completed">
+        {completedTasks.map((task, index) => (
+          <Task key={task.task_id || task.id} task={task} index={index} status="completed" />
+        ))}
+      </Column>
+    </div>
+  </DndProvider>
+);
 };
-
 export default TaskList;

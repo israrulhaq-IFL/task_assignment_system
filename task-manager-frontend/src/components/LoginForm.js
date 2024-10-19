@@ -14,14 +14,14 @@ const LoginForm = ({ onLogin, onForgotPassword }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3001/api/auth/login', { email, password });
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/auth/login`, { email, password });
             
             // Store the tokens in localStorage
             localStorage.setItem('accessToken', response.data.accessToken);
             localStorage.setItem('refreshToken', response.data.refreshToken);
 
             // Fetch the user's role
-            const userResponse = await axios.get('http://localhost:3001/api/users/me', {
+            const userResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/users/me`, {
                 headers: { Authorization: `Bearer ${response.data.accessToken}` }
             });
             localStorage.setItem('role', userResponse.data.role);
@@ -36,7 +36,20 @@ const LoginForm = ({ onLogin, onForgotPassword }) => {
             navigate('/dashboard');
         } catch (error) {
             console.error('There was an error logging in!', error);
-            setErrorMessage('Your username or password is incorrect.');
+            if (error.response) {
+                // Server responded with a status other than 2xx
+                if (error.response.status === 400) {
+                    setErrorMessage('Your username or password is incorrect.');
+                } else {
+                    setErrorMessage('There was a problem with the server. Please try again later.');
+                }
+            } else if (error.request) {
+                // Request was made but no response was received
+                setErrorMessage('Network error. Please check your internet connection.');
+            } else {
+                // Something else happened while setting up the request
+                setErrorMessage('An unexpected error occurred. Please try again.');
+            }
         }
     };
 

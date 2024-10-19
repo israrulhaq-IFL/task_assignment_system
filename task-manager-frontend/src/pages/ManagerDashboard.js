@@ -107,20 +107,19 @@ const ManagerDashboard = () => {
     }
   };
 
-  const addTask = async (task) => {
+  const addTask = async (newTask) => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await axios.post(`${API_BASE_URL}/api/tasks`, task, {
+      const response = await axios.post(`${API_BASE_URL}/api/tasks`, newTask, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setTasks([...tasks, response.data]);
+      const addedTask = response.data;
+      // Map `id` to `task_id` for consistency
+      const taskWithId = { ...addedTask, task_id: addedTask.id };
+      setTasks((prevTasks) => [...prevTasks, taskWithId]);
       setShowForm(false);
     } catch (error) {
       console.error('There was an error adding the task!', error);
-      if (error.response) {
-        console.error('Error response:', error.response.data);
-        setError(error.response.data.error);
-      }
     }
   };
 
@@ -137,9 +136,11 @@ const ManagerDashboard = () => {
       {error && <Alert variant="danger" className="dashboard-alert">{error}</Alert>}
       <Tabs activeKey={tab} onSelect={handleTabSelect} id="task-tabs" className="dashboard-tabs">
         <Tab eventKey="my-tasks" title="My Tasks">
+          {console.log('Passing tasks to TaskList:', tasks)}
           <TaskList tasks={tasks} onDelete={handleDelete} onStatusChange={handleStatusChange} user={user} canDragAndDrop={true} />
         </Tab>
         <Tab eventKey="other-tasks" title="Other Team Tasks">
+          {console.log('Passing tasks to TaskList:', tasks)}
           <TaskList tasks={tasks} onDelete={handleDelete} onStatusChange={handleStatusChange} user={user} canDragAndDrop={false} />
         </Tab>
       </Tabs>

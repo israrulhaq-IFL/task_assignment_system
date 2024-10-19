@@ -30,7 +30,13 @@ const TeamMemberDashboard = ({ user }) => {
           headers: { Authorization: `Bearer ${token}` }
         });
         console.log('Fetched tasks:', response.data);
-        setTasks(response.data);
+        // Map `id` to `task_id` for consistency and provide default value for `created_at`
+        const tasksWithDefaults = response.data.map(task => ({
+          ...task,
+          task_id: task.task_id || task.id,
+          created_at: task.created_at || new Date().toISOString(),
+        }));
+        setTasks(tasksWithDefaults);
       } catch (error) {
         console.error('There was an error fetching the tasks!', error);
         if (error.response) {
@@ -81,7 +87,14 @@ const TeamMemberDashboard = ({ user }) => {
       const response = await axios.post(`${API_BASE_URL}/api/tasks`, task, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setTasks([...tasks, response.data]);
+      const addedTask = response.data;
+      // Map `id` to `task_id` for consistency and provide default value for `created_at`
+      const taskWithDefaults = {
+        ...addedTask,
+        task_id: addedTask.id,
+        created_at: addedTask.created_at || new Date().toISOString(),
+      };
+      setTasks([...tasks, taskWithDefaults]);
       setShowForm(false);
     } catch (error) {
       console.error('There was an error adding the task!', error);

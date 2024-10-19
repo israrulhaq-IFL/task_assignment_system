@@ -33,12 +33,11 @@ const Header = ({ isLoggedIn, handleLogout, userRole }) => {
     }
   }, [isLoggedIn]);
 
- // Function to get a random icon
- const getRandomIcon = () => {
-  const icons = [<PersonCircle />, <PersonFill />, <PersonBadge />];
-  return icons[Math.floor(Math.random() * icons.length)];
-};
-
+  // Function to get a random icon
+  const getRandomIcon = () => {
+    const icons = [<PersonCircle />, <PersonFill />, <PersonBadge />];
+    return icons[Math.floor(Math.random() * icons.length)];
+  };
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
@@ -76,16 +75,16 @@ const Header = ({ isLoggedIn, handleLogout, userRole }) => {
             <Nav className="ml-auto align-items-center">
               {profileImage ? (
                 <NavDropdown
-                title={
-                  profileImage ? (
-                    <Image src={profileImage} roundedCircle width="40" height="40" className="profile-image" />
-                  ) : (
-                    <div className="profile-icon">{getRandomIcon()}</div>
-                  )
-                }
-                id="profile-dropdown"
-                alignRight
-              >
+                  title={
+                    profileImage ? (
+                      <Image src={profileImage} roundedCircle width="40" height="40" className="profile-image" />
+                    ) : (
+                      <div className="profile-icon">{getRandomIcon()}</div>
+                    )
+                  }
+                  id="profile-dropdown"
+                  align="right" // Updated here
+                >
                   <NavDropdown.Item as={Link} to="/profile">Profile</NavDropdown.Item>
                   <NavDropdown.Item href="#" onClick={handleLogout}>Logout</NavDropdown.Item>
                 </NavDropdown>
