@@ -1,20 +1,24 @@
-require('dotenv').config(); // Add this line at the top of your server.js
+require('dotenv').config(); // Load environment variables
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const path = require('path'); // Import path module
+const path = require('path');
+const logger = require('./config/logger'); // Import the logger
+const redisClient = require('./config/redisConfig'); // Import the Redis client
+
+// Import routes
 const taskRoutes = require('./routes/taskRoutes');
 const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes'); // Import user routes
-const logger = require('./config/logger'); // Import the logger
-const departmentRoutes = require('./routes/departmentRoutes'); // Import department routes
-const subDepartmentRoutes = require('./routes/subDepartmentRoutes'); // Import sub-department routes
-const uploadRoutes = require('./routes/uploadRoutes'); // Import the upload routes
+const userRoutes = require('./routes/userRoutes');
+const departmentRoutes = require('./routes/departmentRoutes');
+const subDepartmentRoutes = require('./routes/subDepartmentRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
+// CORS configuration
 const allowedOrigins = ['http://172.28.33.24:3000', 'http://localhost:3000'];
 
 const corsOptions = {
@@ -38,21 +42,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// Use auth routes
+// Use routes
 app.use('/api/auth', authRoutes);
-
-// Use task routes
 app.use('/api/tasks', taskRoutes);
-app.use('/api/upload', uploadRoutes); // Use the upload routes
-
-// Use user routes
 app.use('/api/users', userRoutes);
-
-// Department routes
-app.use('/api', departmentRoutes);
-
-// Sub-department routes
-app.use('/api', subDepartmentRoutes);
+app.use('/api/departments', departmentRoutes);
+app.use('/api/sub-departments', subDepartmentRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Serve the frontend build
 app.use(express.static(path.join(__dirname, 'build')));
