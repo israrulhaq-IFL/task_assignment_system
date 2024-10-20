@@ -18,8 +18,14 @@ const uploadRoutes = require('./routes/uploadRoutes');
 const app = express();
 const port = process.env.PORT || 3001;
 
-// CORS configuration
-const allowedOrigins = ['http://172.28.33.24:3000', 'http://localhost:3000'];
+// for OFFICE CORS configuration
+// const allowedOrigins = ['http://172.28.33.24:3000', 'http://localhost:3000'];
+
+
+
+// FOR HOME CORS configuration
+const allowedOrigins = ['http://192.168.101.102:3000', 'http://localhost:3000'];
+
 
 const corsOptions = {
   origin: (origin, callback) => {

@@ -8,6 +8,15 @@ import { BrowserRouter } from 'react-router-dom'; // Import BrowserRouter
 
 import reportWebVitals from './reportWebVitals';
 
+
+console.log('Starting React application...');
+
+const rootElement = document.getElementById('root');
+const appElement = <App />;
+
+console.log('Virtual DOM element:', appElement);
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
