@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import TaskList from '../components/TaskList';
 import { Button, Modal, Alert, Tabs, Tab, Container } from 'react-bootstrap';
@@ -68,7 +68,7 @@ const ManagerDashboard = () => {
     setRole(userRole);
   }, [tab]);
 
-  const handleStatusChange = async (id, newStatus) => {
+  const handleStatusChange = useCallback(async (id, newStatus) => {
     try {
       const validStatuses = ['pending', 'in progress', 'completed'];
       if (!validStatuses.includes(newStatus)) {
@@ -79,7 +79,8 @@ const ManagerDashboard = () => {
       await axios.put(`${API_BASE_URL}/api/tasks/${id}/status`, { status: newStatus }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setTasks(tasks.map(task => task.task_id === id ? { ...task, status: newStatus } : task));
+      setTasks(tasks => tasks.map(task => task.task_id === id ? { ...task, status: newStatus } : task));
+      console.log(`Task ${id} status changed to ${newStatus}`);
     } catch (error) {
       console.error('There was an error updating the task status!', error);
       if (error.response) {
@@ -89,15 +90,16 @@ const ManagerDashboard = () => {
         setError(error.message);
       }
     }
-  };
+  }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = useCallback(async (id) => {
     try {
       const token = localStorage.getItem('accessToken');
       await axios.delete(`${API_BASE_URL}/api/tasks/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setTasks(tasks.filter(task => task.task_id !== id));
+      setTasks(tasks => tasks.filter(task => task.task_id !== id));
+      console.log(`Task ${id} deleted`);
     } catch (error) {
       console.error('There was an error deleting the task!', error);
       if (error.response) {
@@ -105,9 +107,9 @@ const ManagerDashboard = () => {
         setError(error.response.data.error);
       }
     }
-  };
+  }, []);
 
-  const addTask = async (newTask) => {
+  const addTask = useCallback(async (newTask) => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(`${API_BASE_URL}/api/tasks`, newTask, {
@@ -118,10 +120,11 @@ const ManagerDashboard = () => {
       const taskWithId = { ...addedTask, task_id: addedTask.id };
       setTasks((prevTasks) => [...prevTasks, taskWithId]);
       setShowForm(false);
+      console.log('Task added:', taskWithId);
     } catch (error) {
       console.error('There was an error adding the task!', error);
     }
-  };
+  }, []);
 
   const handleTabSelect = (key) => {
     navigate(`/dashboard/${key}`);
@@ -149,7 +152,7 @@ const ManagerDashboard = () => {
           <Modal.Title>Add Task</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        {user && <TaskForm addTask={addTask} role={role} user={user} />}
+          {user && <TaskForm addTask={addTask} role={role} user={user} />}
         </Modal.Body>
       </Modal>
     </Container>
