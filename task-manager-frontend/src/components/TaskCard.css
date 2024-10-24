@@ -157,3 +157,11 @@
   max-width: 100%; /* Ensure images fit within the modal */
   height: auto; /* Maintain aspect ratio */
 }
+
+.task-card-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 100%; /* Ensure the title does not exceed the width of the card */
+}

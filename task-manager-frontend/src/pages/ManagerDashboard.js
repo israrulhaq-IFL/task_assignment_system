@@ -8,52 +8,29 @@ import './Dashboard.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
 
-const ManagerDashboard = () => {
+const ManagerDashboard = ({ user }) => {
   const { tab } = useParams(); // Get the tab parameter from the route
   const navigate = useNavigate();
-  const [tasks, setTasks] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState('');
   const [role, setRole] = useState('');
-  const [user, setUser] = useState(null);
+  const [myTasks, setMyTasks] = useState([]);
+  const [otherTasks, setOtherTasks] = useState([]);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userId = localStorage.getItem('user_id');
-        const token = localStorage.getItem('accessToken');
-        if (!userId) {
-          setError('User ID is missing.');
-          return;
-        }
+    // Fetch role from local storage or API
+    const userRole = localStorage.getItem('role');
+    setRole(userRole);
 
-        const response = await axios.get(`${API_BASE_URL}/api/users/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setUser(response.data);
-      } catch (error) {
-        console.error('There was an error fetching the user data!', error);
-        setError('User information is missing.');
-      }
-    };
-
-    const fetchTasks = async () => {
+    const fetchMyTasks = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        console.log('Access Token:', token);
-        let url = `${API_BASE_URL}/api/tasks/manager`;
-        if (tab === 'my-tasks') {
-          url = `${API_BASE_URL}/api/tasks/manager/my-tasks`;
-        } else if (tab === 'other-tasks') {
-          url = `${API_BASE_URL}/api/tasks/manager/other-tasks`;
-        }
-        const response = await axios.get(url, {
+        const response = await axios.get(`${API_BASE_URL}/api/tasks/manager/my-tasks`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        console.log('Fetched tasks:', response.data);
-        setTasks(response.data);
+        setMyTasks(response.data);
       } catch (error) {
-        console.error('There was an error fetching the tasks!', error);
+        console.error('There was an error fetching my tasks!', error);
         if (error.response) {
           console.error('Error response:', error.response.data);
           setError(error.response.data.error);
@@ -61,11 +38,24 @@ const ManagerDashboard = () => {
       }
     };
 
-    fetchUser().then(fetchTasks);
+    const fetchOtherTasks = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        const response = await axios.get(`${API_BASE_URL}/api/tasks/manager/other-tasks`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setOtherTasks(response.data);
+      } catch (error) {
+        console.error('There was an error fetching other tasks!', error);
+        if (error.response) {
+          console.error('Error response:', error.response.data);
+          setError(error.response.data.error);
+        }
+      }
+    };
 
-    // Fetch role from local storage or API
-    const userRole = localStorage.getItem('role');
-    setRole(userRole);
+    fetchMyTasks();
+    fetchOtherTasks();
   }, [tab]);
 
   const handleStatusChange = async (id, newStatus) => {
@@ -79,7 +69,9 @@ const ManagerDashboard = () => {
       await axios.put(`${API_BASE_URL}/api/tasks/${id}/status`, { status: newStatus }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setTasks(tasks.map(task => task.task_id === id ? { ...task, status: newStatus } : task));
+
+      // Update the task in the appropriate state
+      // This logic will be handled in the TaskColumn component
     } catch (error) {
       console.error('There was an error updating the task status!', error);
       if (error.response) {
@@ -97,7 +89,9 @@ const ManagerDashboard = () => {
       await axios.delete(`${API_BASE_URL}/api/tasks/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setTasks(tasks.filter(task => task.task_id !== id));
+
+      // Remove the task from the appropriate state
+      // This logic will be handled in the TaskColumn component
     } catch (error) {
       console.error('There was an error deleting the task!', error);
       if (error.response) {
@@ -110,13 +104,16 @@ const ManagerDashboard = () => {
   const addTask = async (newTask) => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await axios.post(`${API_BASE_URL}/api/tasks`, newTask, {
+      await axios.post(`${API_BASE_URL}/api/tasks`, newTask, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      const addedTask = response.data;
+      // const addedTask = response.data;
       // Map `id` to `task_id` for consistency
-      const taskWithId = { ...addedTask, task_id: addedTask.id };
-      setTasks((prevTasks) => [...prevTasks, taskWithId]);
+      // const taskWithId = { ...addedTask, task_id: addedTask.id };
+
+      // Add the task to the appropriate state
+      // This logic will be handled in the TaskColumn component
+
       setShowForm(false);
     } catch (error) {
       console.error('There was an error adding the task!', error);
@@ -136,12 +133,10 @@ const ManagerDashboard = () => {
       {error && <Alert variant="danger" className="dashboard-alert">{error}</Alert>}
       <Tabs activeKey={tab} onSelect={handleTabSelect} id="task-tabs" className="dashboard-tabs">
         <Tab eventKey="my-tasks" title="My Tasks">
-          {console.log('Passing tasks to TaskList:', tasks)}
-          <TaskList tasks={tasks} onDelete={handleDelete} onStatusChange={handleStatusChange} user={user} canDragAndDrop={true} />
+          <TaskList tasks={myTasks} onDelete={handleDelete} onStatusChange={handleStatusChange} user={user} canDragAndDrop={true} />
         </Tab>
         <Tab eventKey="other-tasks" title="Other Team Tasks">
-          {console.log('Passing tasks to TaskList:', tasks)}
-          <TaskList tasks={tasks} onDelete={handleDelete} onStatusChange={handleStatusChange} user={user} canDragAndDrop={false} />
+          <TaskList tasks={otherTasks} onDelete={handleDelete} onStatusChange={handleStatusChange} user={user} canDragAndDrop={false} />
         </Tab>
       </Tabs>
       <Modal show={showForm} onHide={() => setShowForm(false)} className="dashboard-modal">
@@ -149,7 +144,7 @@ const ManagerDashboard = () => {
           <Modal.Title>Add Task</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        {user && <TaskForm addTask={addTask} role={role} user={user} />}
+          {user && <TaskForm addTask={addTask} role={role} user={user} />}
         </Modal.Body>
       </Modal>
     </Container>

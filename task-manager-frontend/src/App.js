@@ -147,15 +147,16 @@ function App() {
       case 'Team Member':
         return <TeamMemberDashboard user={user} />; // Pass user to TeamMemberDashboard
       case 'Manager':
-        return <ManagerDashboard />;
+        return <ManagerDashboard user={user} />; // Pass user to ManagerDashboard
       case 'HOD':
-        return <HeadOfDepartmentDashboard />;
+        return <HeadOfDepartmentDashboard user={user} />; // Pass user to HeadOfDepartmentDashboard
       case 'Super Admin':
-        return <SuperAdminDashboard />;
+        return <SuperAdminDashboard user={user} />; // Pass user to SuperAdminDashboard
       default:
         return null;
     }
   };
+
 
   return (
     <DndProvider backend={HTML5Backend}>

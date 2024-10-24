@@ -4,6 +4,13 @@ const taskController = require('../controllers/taskController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 
+
+// Route to get unintracted tasks for team member
+router.get('/team-member/unintracted-tasks', taskController.getUnintractedTasksForTeamMember);
+
+// Add endpoints to fetch tasks by status
+router.get('/status/:status', authMiddleware, taskController.getTasksByStatus);
+
 router.post('/interactions', authMiddleware, taskController.logInteraction);
 router.get('/interactions/:taskId', authMiddleware, taskController.getInteractionsByTaskId);
 router.put('/:Id/target-date', authMiddleware, taskController.updateTaskTargetDate);

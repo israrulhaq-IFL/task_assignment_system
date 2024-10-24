@@ -19,6 +19,7 @@ const TaskCard = ({ task, onDelete, onStatusChange, isExpanded, onExpand, onHide
   const datePickerWrapperRef = useRef(null);
 
   useEffect(() => {
+    // Check if the user has interacted with the task
     const interactions = task.interactions || [];
     const hasInteracted = interactions.some(interaction => interaction.user_id === user.user_id);
     setHasInteracted(hasInteracted);
@@ -238,28 +239,28 @@ const TaskCard = ({ task, onDelete, onStatusChange, isExpanded, onExpand, onHide
             </Button>
           </Modal.Footer>
         </Modal>
-      </Card>
 
-      <Modal show={isModalOpen} onHide={closeModal} className="task-details-modal">
-        <Modal.Header closeButton>
-          <Modal.Title>Task Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p><strong>Title:</strong> {task.title || 'Untitled Task'}</p>
-          <p><strong>Description:</strong> <span dangerouslySetInnerHTML={{ __html: task.description }}></span></p>
-          <p><strong>Created At:</strong> {new Date(task.created_at).toLocaleString()}</p>
-          <p><strong>Created By:</strong> {task.created_by_name}</p>
-          <p><strong>Assignees:</strong> {assignees.join(', ') || 'N/A'}</p>
-          <p><strong>Sub-Departments:</strong> {subDepartments.join(', ') || 'N/A'}</p>
-          <p><strong>Status:</strong> {task.status}</p>
-          <p><strong>Target Date:</strong> {new Date(targetDate).toLocaleDateString()}</p>
-          <p><strong>Latest Interactions:</strong> {latestInteractions.length > 0 ? latestInteractions.map((interaction, index) => (
-            <p key={index}>
-              {interaction.interaction_type} by {interaction.user_name} at {new Date(interaction.interaction_timestamp).toLocaleString()}
-            </p>
-          )) : 'No status change interactions'}</p>
-        </Modal.Body>
-      </Modal>
+        <Modal show={isModalOpen} onHide={closeModal} className="task-details-modal">
+          <Modal.Header closeButton>
+            <Modal.Title>Task Details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p><strong>Title:</strong> {task.title || 'Untitled Task'}</p>
+            <p><strong>Description:</strong> <span dangerouslySetInnerHTML={{ __html: task.description }}></span></p>
+            <p><strong>Created At:</strong> {new Date(task.created_at).toLocaleString()}</p>
+            <p><strong>Created By:</strong> {task.created_by_name}</p>
+            <p><strong>Assignees:</strong> {assignees.join(', ') || 'N/A'}</p>
+            <p><strong>Sub-Departments:</strong> {subDepartments.join(', ') || 'N/A'}</p>
+            <p><strong>Status:</strong> {task.status}</p>
+            <p><strong>Target Date:</strong> {new Date(targetDate).toLocaleDateString()}</p>
+            <p><strong>Latest Interactions:</strong> {latestInteractions.length > 0 ? latestInteractions.map((interaction, index) => (
+              <p key={index}>
+                {interaction.interaction_type} by {interaction.user_name} at {new Date(interaction.interaction_timestamp).toLocaleString()}
+              </p>
+            )) : 'No status change interactions'}</p>
+          </Modal.Body>
+        </Modal>
+      </Card>
     </>
   );
 };

@@ -73,3 +73,129 @@
 2024-10-15T05:25:53.631Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
 2024-10-15T05:31:21.016Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
 2024-10-15T05:31:21.025Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T09:38:27.722Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.727Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.729Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.787Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.792Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.795Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.798Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.804Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.813Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.827Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.833Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.865Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.884Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.892Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.905Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.909Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.913Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.918Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.937Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.947Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.957Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.964Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.975Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.979Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:27.988Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:28.004Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:28.054Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:28.060Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:28.064Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T09:38:28.068Z [[31merror[39m]: Error: redisClient is not defined
+2024-10-24T10:50:29.223Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:50:29.489Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:50:34.985Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:50:35.098Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:51:14.336Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:51:14.395Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:51:14.451Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:53:51.835Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:53:51.915Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:53:53.522Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:53:53.770Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:54:07.397Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:54:07.604Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:54:43.257Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:54:43.406Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:54:43.697Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:54:45.418Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:54:45.628Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:55:11.179Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:55:11.449Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:55:15.030Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:55:15.510Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:57:10.982Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:57:11.001Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:57:11.349Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:57:20.764Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:57:20.808Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T10:57:20.857Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T11:25:30.283Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T11:25:30.370Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T11:25:30.403Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T11:25:40.609Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T11:25:40.731Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T11:25:43.639Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T11:25:43.753Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T11:25:47.804Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T11:25:47.968Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T11:26:39.219Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T11:27:15.251Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T11:27:15.260Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T11:27:15.490Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'D:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T11:34:19.355Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:34:19.448Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:34:19.470Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:34:22.259Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:34:22.268Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:34:27.002Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:34:27.029Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:34:27.061Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:34:42.617Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:34:42.648Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:34:42.663Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:34:58.345Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:34:58.371Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:34:58.395Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:35:02.061Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:35:02.095Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:35:02.117Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:35:09.505Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:35:09.533Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:35:09.552Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:35:15.380Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:35:15.390Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:37:55.001Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:37:55.100Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:37:55.160Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:38:14.177Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:38:15.139Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:38:26.017Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:38:26.108Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:38:29.357Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:38:29.365Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:38:36.295Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:38:36.384Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:38:50.746Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:38:50.800Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:38:50.854Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:39:02.356Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:39:02.446Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:41:19.494Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:41:19.507Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:41:19.536Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:41:25.654Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T11:41:25.787Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T12:00:54.242Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T12:00:54.272Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T12:00:54.292Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T12:00:59.724Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T12:00:59.756Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T12:00:59.774Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T12:01:03.417Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T12:01:03.453Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T12:01:03.470Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T12:01:26.319Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T12:01:26.341Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T12:01:26.457Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')

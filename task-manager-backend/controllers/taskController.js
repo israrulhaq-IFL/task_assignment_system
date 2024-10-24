@@ -1,8 +1,9 @@
 const Task = require('../models/taskModel');
 const TaskAssignee = require('../models/taskAssignee');
 const TaskSubDepartment = require('../models/taskSubDepartment');
-const { log } = require('winston');
+const redisClient = require('../config/redisConfig'); // Import the Redis client
 
+// Create a new task
 exports.createTask = (req, res) => {
   const { title, description, priority, status, assigned_to, created_by, department_id, sub_department_ids, target_date } = req.body;
 
@@ -64,6 +65,7 @@ exports.createTask = (req, res) => {
   });
 };
 
+// Get a task by ID
 exports.getTaskById = (req, res) => {
   const taskId = req.params.id;
   Task.getById(taskId, (err, result) => {
@@ -81,6 +83,7 @@ exports.getTaskById = (req, res) => {
   });
 };
 
+// Get all tasks
 exports.getAllTasks = (req, res) => {
   Task.getAllDetailed((err, result) => {
     if (err) {
@@ -90,6 +93,7 @@ exports.getAllTasks = (req, res) => {
   });
 };
 
+// Get tasks by department
 exports.getTasksByDepartment = (req, res) => {
   const departmentId = req.params.departmentId;
   Task.getByDepartment(departmentId, (err, result) => {
@@ -100,6 +104,7 @@ exports.getTasksByDepartment = (req, res) => {
   });
 };
 
+// Get tasks by sub-department
 exports.getTasksBySubDepartment = (req, res) => {
   const subDepartmentId = req.params.subDepartmentId;
   Task.getBySubDepartment(subDepartmentId, (err, result) => {
@@ -110,6 +115,7 @@ exports.getTasksBySubDepartment = (req, res) => {
   });
 };
 
+// Update a task
 exports.updateTask = (req, res) => {
   const taskId = req.params.id;
   const { title, description, priority, status, assigned_to, department_id, sub_department_ids, target_date } = req.body;
@@ -133,6 +139,7 @@ exports.updateTask = (req, res) => {
   });
 };
 
+// Delete a task
 exports.deleteTask = (req, res) => {
   const taskId = req.params.id;
   Task.delete(taskId, (err, result) => {
@@ -205,44 +212,80 @@ exports.updateTaskTargetDate = (req, res) => {
   });
 };
 
+// Get all tasks for manager
 exports.getAllTasksForManager = (req, res) => {
   const managerId = req.user.user_id;
   const subDepartmentId = req.user.sub_department_id;
 
-  Task.getTasksForManager(managerId, subDepartmentId, (err, result) => {
+  Task.getTasksForManager(managerId, subDepartmentId, async (err, tasks) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
-    res.status(200).json(result);
+
+    // Fetch interaction data from Redis for each task
+    const tasksWithInteractions = await Promise.all(tasks.map(async (task) => {
+      const redisKey = `interaction:${managerId}:${task.task_id}`;
+      const redisResult = await redisClient.get(redisKey);
+      if (redisResult) {
+        task.interactions = [JSON.parse(redisResult)];
+      }
+      return task;
+    }));
+
+    res.status(200).json(tasksWithInteractions);
   });
 };
 
+// Get my tasks for manager
 exports.getMyTasksForManager = (req, res) => {
   const managerId = req.user.user_id;
   const subDepartmentId = req.user.sub_department_id;
   console.log('my task manager triggered'); 
-  Task.getMyTasksForManager(managerId, subDepartmentId, (err, result) => {
+  Task.getMyTasksForManager(managerId, subDepartmentId, async (err, tasks) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
-    res.status(200).json(result);
+
+    // Fetch interaction data from Redis for each task
+    const tasksWithInteractions = await Promise.all(tasks.map(async (task) => {
+      const redisKey = `interaction:${managerId}:${task.task_id}`;
+      const redisResult = await redisClient.get(redisKey);
+      if (redisResult) {
+        task.interactions = [JSON.parse(redisResult)];
+      }
+      return task;
+    }));
+
+    res.status(200).json(tasksWithInteractions);
   });
 };
 
+// Get other tasks for manager
 exports.getOtherTasksForManager = (req, res) => {
   const managerId = req.user.user_id;
   const subDepartmentId = req.user.sub_department_id;
 
-
-  console.log('opther task manager triggered'); // Log the req.user object
-  Task.getOtherTasksForManager(managerId, subDepartmentId, (err, result) => {
+  console.log('other task manager triggered'); // Log the req.user object
+  Task.getOtherTasksForManager(managerId, subDepartmentId, async (err, tasks) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
-    res.status(200).json(result);
+
+    // Fetch interaction data from Redis for each task
+    const tasksWithInteractions = await Promise.all(tasks.map(async (task) => {
+      const redisKey = `interaction:${managerId}:${task.task_id}`;
+      const redisResult = await redisClient.get(redisKey);
+      if (redisResult) {
+        task.interactions = [JSON.parse(redisResult)];
+      }
+      return task;
+    }));
+
+    res.status(200).json(tasksWithInteractions);
   });
 };
 
+// Get tasks for team member
 exports.getTasksForTeamMember = (req, res) => {
   console.log('Request user data:', req.user); // Log the req.user object
 
@@ -253,62 +296,65 @@ exports.getTasksForTeamMember = (req, res) => {
   const userId = req.user.user_id; // Use id instead of user_id
   const subDepartmentId = req.user.sub_department_id; // Assuming sub-department ID is available in req.user
 
-  Task.getTasksForTeamMember(userId, subDepartmentId, (err, result) => {
+  Task.getTasksForTeamMember(userId, subDepartmentId, async (err, tasks) => {
     console.log('Fetching tasks for team member:', userId); // Log the user ID
     if (err) {
       console.error('Error fetching tasks for team member:', err); // Log the error
       return res.status(500).json({ error: 'Error fetching tasks for team member' });
     }
-    //console.log('Fetched tasks for temmember:', result); // Log the fetched tasks
-    res.status(200).json(result);
+
+    // Fetch interaction data from Redis for each task
+    const tasksWithInteractions = await Promise.all(tasks.map(async (task) => {
+      const redisKey = `interaction:${userId}:${task.task_id}`;
+      const redisResult = await redisClient.get(redisKey);
+      if (redisResult) {
+        task.interactions = [JSON.parse(redisResult)];
+      }
+      return task;
+    }));
+
+    res.status(200).json(tasksWithInteractions);
   });
 };
 
-
+// Get my tasks for team member
 exports.getMyTasksForTeamMember = (req, res) => {
-  const userId = req.user.user_id;
-  const subDepartmentId = req.user.sub_department_id;
+  if (!req.user) {
+    return res.status(401).json({ error: 'User not authenticated' });
+  }
 
-  Task.getMyTasksForTeamMember(userId, subDepartmentId, (err, result) => {
+  const userId = req.user.user_id;
+
+  Task.getMyTasksForTeamMember(userId, (err, tasks) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
-    res.status(200).json(result);
+    res.status(200).json(tasks);
   });
 };
 
+// Get other tasks for team member
 exports.getOtherTasksForTeamMember = (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'User not authenticated' });
+  }
+
   const userId = req.user.user_id;
   const subDepartmentId = req.user.sub_department_id;
 
-  Task.getOtherTasksForTeamMember(userId, subDepartmentId, (err, result) => {
+  Task.getOtherTasksForTeamMember(userId, subDepartmentId, (err, tasks) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
-    res.status(200).json(result);
+    res.status(200).json(tasks);
   });
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Log interaction and store in Redis
 exports.logInteraction = (req, res) => {
-  //console.log('log interaction hit , Request body:', req.body); // Log the request body
   const { taskId, interactionType, interactionDetail } = req.body;
-  const userId = req.user.user_id; // Assuming user ID is available in req.user
-//console.log('User ID for logs:', userId); // Log the user ID
+  const userId = req.user.user_id;
+
   const interactionData = {
     user_id: userId,
     task_id: taskId,
@@ -321,20 +367,68 @@ exports.logInteraction = (req, res) => {
       console.error('Error logging interaction:', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
+
+    // Store interaction in Redis
+    const redisKey = `interaction:${userId}:${taskId}`;
+    redisClient.set(redisKey, JSON.stringify(interactionData), 'EX', 3600 * 24 * 7); // Set expiration to 7 days
+
     res.status(201).json({ message: 'Interaction logged successfully' });
   });
 };
 
+// Get interactions by task ID and check Redis
 exports.getInteractionsByTaskId = (req, res) => {
   const taskId = req.params.taskId;
+  const userId = req.user.user_id;
 
-  Task.getInteractionsByTaskId(taskId, (err, result) => {
+  const redisKey = `interaction:${userId}:${taskId}`;
+  redisClient.get(redisKey, (err, redisResult) => {
     if (err) {
-      console.error('Error fetching interactions:', err);
+      console.error('Error fetching interaction from Redis:', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
 
-   // console.log('Fetched intractions:', result);
-    res.status(200).json(result);
+    if (redisResult) {
+      console.log('Interaction found in Redis:', redisResult);
+      return res.status(200).json([JSON.parse(redisResult)]); // Ensure the response is an array
+    }
+
+    Task.getInteractionsByTaskId(taskId, (err, result) => {
+      if (err) {
+        console.error('Error fetching interactions:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      res.status(200).json(result);
+    });
+  });
+};
+
+// Get tasks by status
+exports.getTasksByStatus = (req, res) => {
+  const { status } = req.params;
+  Task.getTasksByStatus(status, (err, tasks) => {
+    if (err) {
+      console.error('Error fetching tasks by status:', err);
+      return res.status(500).json({ error: 'Server error' });
+    }
+    res.json(tasks);
+  });
+};
+
+// Get unintracted tasks for team member
+exports.getUnintractedTasksForTeamMember = (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'User not authenticated' });
+  }
+
+  const userId = req.user.user_id;
+  const subDepartmentId = req.user.sub_department_id;
+
+  Task.getUnintractedTasksForTeamMember(userId, subDepartmentId, (err, tasks) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(200).json(tasks);
   });
 };
