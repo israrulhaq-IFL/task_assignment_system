@@ -5,6 +5,8 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 
 
+router.get('/manager/unintracted-tasks', authMiddleware, taskController.getUnintractedTasksForManager);
+
 // Route to get unintracted tasks for team member
 router.get('/team-member/unintracted-tasks', taskController.getUnintractedTasksForTeamMember);
 

@@ -25,6 +25,7 @@ const TaskList = ({ tasks, onDelete, onStatusChange, user, canDragAndDrop, filte
     const updatedTask = tasks.find(task => task.task_id === taskId);
     if (updatedTask) {
       updatedTask.status = newStatus;
+      updatedTask.interacted = true;
       if (newStatus === 'pending') {
         setPendingTasks(prevTasks => [...prevTasks, updatedTask]);
       } else if (newStatus === 'in progress') {

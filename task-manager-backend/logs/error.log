@@ -199,3 +199,12 @@
 2024-10-24T12:01:26.319Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
 2024-10-24T12:01:26.341Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
 2024-10-24T12:01:26.457Z [[31merror[39m]: Error: Cannot read properties of undefined (reading 'user_id')
+2024-10-24T17:05:46.224Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'C:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T17:05:46.432Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'C:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T17:35:54.773Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'C:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T17:35:54.783Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'C:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T17:35:54.803Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'C:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T17:36:42.195Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'C:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T17:36:42.251Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'C:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T17:36:47.934Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'C:\task_assignment_system\task-manager-backend\build\index.html'
+2024-10-24T17:36:48.005Z [[31merror[39m]: Error: ENOENT: no such file or directory, stat 'C:\task_assignment_system\task-manager-backend\build\index.html'

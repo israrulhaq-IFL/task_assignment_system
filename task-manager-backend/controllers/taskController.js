@@ -285,6 +285,19 @@ exports.getOtherTasksForManager = (req, res) => {
   });
 };
 
+// Get unintracted tasks for manager
+exports.getUnintractedTasksForManager = (req, res) => {
+  const managerId = req.user.user_id;
+  const subDepartmentId = req.user.sub_department_id;
+
+  Task.getUnintractedTasksForManager(managerId, subDepartmentId, (err, tasks) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(200).json(tasks);
+  });
+};
+
 // Get tasks for team member
 exports.getTasksForTeamMember = (req, res) => {
   console.log('Request user data:', req.user); // Log the req.user object
@@ -343,6 +356,23 @@ exports.getOtherTasksForTeamMember = (req, res) => {
   const subDepartmentId = req.user.sub_department_id;
 
   Task.getOtherTasksForTeamMember(userId, subDepartmentId, (err, tasks) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(200).json(tasks);
+  });
+};
+
+// Get unintracted tasks for team member
+exports.getUnintractedTasksForTeamMember = (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'User not authenticated' });
+  }
+
+  const userId = req.user.user_id;
+  const subDepartmentId = req.user.sub_department_id;
+
+  Task.getUnintractedTasksForTeamMember(userId, subDepartmentId, (err, tasks) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -413,22 +443,5 @@ exports.getTasksByStatus = (req, res) => {
       return res.status(500).json({ error: 'Server error' });
     }
     res.json(tasks);
-  });
-};
-
-// Get unintracted tasks for team member
-exports.getUnintractedTasksForTeamMember = (req, res) => {
-  if (!req.user) {
-    return res.status(401).json({ error: 'User not authenticated' });
-  }
-
-  const userId = req.user.user_id;
-  const subDepartmentId = req.user.sub_department_id;
-
-  Task.getUnintractedTasksForTeamMember(userId, subDepartmentId, (err, tasks) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    res.status(200).json(tasks);
   });
 };
