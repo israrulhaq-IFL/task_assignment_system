@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import TaskList from '../components/TaskList';
 import { Button, Modal, Alert, Tabs, Tab, Container } from 'react-bootstrap';
@@ -58,7 +58,7 @@ const ManagerDashboard = ({ user }) => {
     fetchOtherTasks();
   }, [tab]);
 
-  const handleStatusChange = async (id, newStatus) => {
+  const handleStatusChange = useCallback(async (id, newStatus) => {
     try {
       const validStatuses = ['pending', 'in progress', 'completed'];
       if (!validStatuses.includes(newStatus)) {
@@ -81,9 +81,9 @@ const ManagerDashboard = ({ user }) => {
         setError(error.message);
       }
     }
-  };
+  }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = useCallback(async (id) => {
     try {
       const token = localStorage.getItem('accessToken');
       await axios.delete(`${API_BASE_URL}/api/tasks/${id}`, {
@@ -99,9 +99,9 @@ const ManagerDashboard = ({ user }) => {
         setError(error.response.data.error);
       }
     }
-  };
+  }, []);
 
-  const addTask = async (newTask) => {
+  const addTask = useCallback(async (newTask) => {
     try {
       const token = localStorage.getItem('accessToken');
       await axios.post(`${API_BASE_URL}/api/tasks`, newTask, {
@@ -115,10 +115,11 @@ const ManagerDashboard = ({ user }) => {
       // This logic will be handled in the TaskColumn component
 
       setShowForm(false);
+      console.log('Task added:', taskWithId);
     } catch (error) {
       console.error('There was an error adding the task!', error);
     }
-  };
+  }, []);
 
   const handleTabSelect = (key) => {
     navigate(`/dashboard/${key}`);
@@ -144,6 +145,7 @@ const ManagerDashboard = ({ user }) => {
           <Modal.Title>Add Task</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {user && <TaskForm addTask={addTask} role={role} user={user} />}
           {user && <TaskForm addTask={addTask} role={role} user={user} />}
         </Modal.Body>
       </Modal>
