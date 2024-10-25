@@ -109,7 +109,7 @@ const Task = {
   },
 
   updateStatus: (taskId, status, callback) => {
-    const sql = 'UPDATE tasks SET status = ?, interacted = TRUE WHERE task_id = ?';
+    const sql = 'UPDATE tasks SET status = ? WHERE task_id = ?';
     console.log(`Executing SQL: ${sql} with status: ${status} and taskId: ${taskId}`); // Log the SQL query and parameters
     db.query(sql, [status, taskId], (err, result) => {
       if (err) {
@@ -122,7 +122,7 @@ const Task = {
   },
 
   updateTargetDate: (taskId, targetDate, callback) => {
-    const sql = 'UPDATE tasks SET target_date = ?, interacted = TRUE WHERE task_id = ?';
+    const sql = 'UPDATE tasks SET target_date = ? WHERE task_id = ?';
     console.log(`Executing SQL: ${sql} with targetDate: ${targetDate} and taskId: ${taskId}`); // Log the SQL query and parameters
     db.query(sql, [targetDate, taskId], (err, result) => {
       if (err) {
@@ -171,7 +171,9 @@ const Task = {
     `;
     db.query(sql, [managerId, managerId, managerId, subDepartmentId], (err, result) => {
       if (err) return callback(err);
+      //console.log('Raw query result:', result); // Log the raw query result
 
+      // Process the result to group interactions by task
       const tasks = {};
       result.forEach(row => {
         if (!tasks[row.task_id]) {
@@ -194,7 +196,6 @@ const Task = {
     });
   },
 
- 
   getMyTasksForManager: (managerId, subDepartmentId, callback) => {
     const sql = `
       SELECT t.*, 
@@ -209,7 +210,7 @@ const Task = {
       LEFT JOIN sub_departments sd ON tsd.sub_department_id = sd.sub_department_id
       LEFT JOIN users creator ON t.created_by = creator.user_id
       LEFT JOIN userinteractions ui ON t.task_id = ui.task_id AND ui.user_id = ?
-      WHERE ta.user_id = ? AND (ta.user_id = ? OR t.created_by = ? OR tsd.sub_department_id = ?) AND ui.interaction_type IN ('expand', 'open')
+      WHERE ta.user_id = ? AND (ta.user_id = ? OR t.created_by = ? OR tsd.sub_department_id = ?)
       GROUP BY t.task_id, ui.interaction_id
       ORDER BY t.created_at DESC
     `;
@@ -252,7 +253,7 @@ const Task = {
       LEFT JOIN sub_departments sd ON tsd.sub_department_id = sd.sub_department_id
       LEFT JOIN users creator ON t.created_by = creator.user_id
       LEFT JOIN userinteractions ui ON t.task_id = ui.task_id AND ui.user_id = ?
-      WHERE ta.user_id != ? AND (t.created_by != ? OR tsd.sub_department_id = ?) AND ui.interaction_type IN ('expand', 'open')
+      WHERE ta.user_id != ? AND (t.created_by != ? OR tsd.sub_department_id = ?)
       GROUP BY t.task_id, ui.interaction_id
       ORDER BY t.created_at DESC
     `;
@@ -282,26 +283,31 @@ const Task = {
   },
 
 
-  getUnintractedTasksForManager: (managerId, subDepartmentId, callback) => {
-    const sql = `
-      SELECT t.*, 
-             GROUP_CONCAT(DISTINCT u.name) AS assignees, 
-             GROUP_CONCAT(DISTINCT sd.sub_department_name) AS sub_departments,
-             creator.name AS created_by_name
-      FROM tasks t
-      LEFT JOIN task_assignees ta ON t.task_id = ta.task_id
-      LEFT JOIN users u ON ta.user_id = u.user_id
-      LEFT JOIN task_sub_departments tsd ON t.task_id = tsd.task_id
-      LEFT JOIN sub_departments sd ON tsd.sub_department_id = sd.sub_department_id
-      LEFT JOIN users creator ON t.created_by = creator.user_id
-      LEFT JOIN userinteractions ui ON t.task_id = ui.task_id AND ui.user_id = ?
-      WHERE (ta.user_id = ? OR t.created_by = ? OR tsd.sub_department_id = ?) AND ui.interaction_type IS NULL
-      GROUP BY t.task_id
-      ORDER BY t.created_at DESC
-    `;
-    db.query(sql, [managerId, managerId, managerId, subDepartmentId], (err, result) => {
-      if (err) return callback(err);
 
+
+  getTasksForTeamMember: (userId, subDepartmentId, callback) => {
+    const sql = `
+     SELECT t.*, 
+           GROUP_CONCAT(DISTINCT u.name) AS assignees, 
+           GROUP_CONCAT(DISTINCT sd.sub_department_name) AS sub_departments,
+           creator.name AS created_by_name,
+           ui.interaction_id, ui.user_id, ui.interaction_type, ui.interaction_timestamp
+    FROM tasks t
+    LEFT JOIN task_assignees ta ON t.task_id = ta.task_id
+    LEFT JOIN users u ON ta.user_id = u.user_id
+    LEFT JOIN task_sub_departments tsd ON t.task_id = tsd.task_id
+    LEFT JOIN sub_departments sd ON tsd.sub_department_id = sd.sub_department_id
+    LEFT JOIN users creator ON t.created_by = creator.user_id
+    LEFT JOIN userinteractions ui ON t.task_id = ui.task_id AND ui.user_id = ?
+    WHERE tsd.sub_department_id = ?
+    GROUP BY t.task_id, ui.interaction_id
+    ORDER BY t.created_at DESC
+    `;
+    db.query(sql, [userId, subDepartmentId], (err, result) => {
+      if (err) return callback(err);
+     // console.log('Raw query result:', result); // Log the raw query result
+
+      // Process the result to group interactions by task
       const tasks = {};
       result.forEach(row => {
         if (!tasks[row.task_id]) {
@@ -310,14 +316,21 @@ const Task = {
             interactions: []
           };
         }
+        if (row.interaction_id) {
+          tasks[row.task_id].interactions.push({
+            interaction_id: row.interaction_id,
+            user_id: row.user_id,
+            interaction_type: row.interaction_type,
+            interaction_timestamp: row.interaction_timestamp
+          });
+        }
       });
 
       callback(null, Object.values(tasks));
     });
   },
 
-
-  getTasksForTeamMember: (userId, subDepartmentId, callback) => {
+  getMyTasksForTeamMember: (userId, subDepartmentId, callback) => {
     const sql = `
       SELECT t.*, 
              GROUP_CONCAT(DISTINCT u.name) AS assignees, 
@@ -331,53 +344,11 @@ const Task = {
       LEFT JOIN sub_departments sd ON tsd.sub_department_id = sd.sub_department_id
       LEFT JOIN users creator ON t.created_by = creator.user_id
       LEFT JOIN userinteractions ui ON t.task_id = ui.task_id AND ui.user_id = ?
-      WHERE tsd.sub_department_id = ?
+      WHERE ta.user_id = ? AND tsd.sub_department_id = ?
       GROUP BY t.task_id, ui.interaction_id
       ORDER BY t.created_at DESC
     `;
-    db.query(sql, [userId, subDepartmentId], (err, result) => {
-      if (err) return callback(err);
-
-      const tasks = {};
-      result.forEach(row => {
-        if (!tasks[row.task_id]) {
-          tasks[row.task_id] = {
-            ...row,
-            interactions: []
-          };
-        }
-        if (row.interaction_id) {
-          tasks[row.task_id].interactions.push({
-            interaction_id: row.interaction_id,
-            user_id: row.user_id,
-            interaction_type: row.interaction_type,
-            interaction_timestamp: row.interaction_timestamp
-          });
-        }
-      });
-
-      callback(null, Object.values(tasks));
-    });
-  },
-
-
-  getMyTasksForTeamMember: (userId, callback) => {
-    const query = `
-      SELECT t.*, 
-             GROUP_CONCAT(DISTINCT u.name) AS assignees, 
-             GROUP_CONCAT(DISTINCT sd.sub_department_name) AS sub_departments,
-             creator.name AS created_by_name
-      FROM tasks t
-      LEFT JOIN task_assignees ta ON t.task_id = ta.task_id
-      LEFT JOIN users u ON ta.user_id = u.user_id
-      LEFT JOIN task_sub_departments tsd ON t.task_id = tsd.task_id
-      LEFT JOIN sub_departments sd ON tsd.sub_department_id = sd.sub_department_id
-      LEFT JOIN users creator ON t.created_by = creator.user_id
-      LEFT JOIN userinteractions ui ON t.task_id = ui.task_id AND ui.user_id = ?
-      WHERE ta.user_id = ? AND ui.interaction_type IN ('expand', 'open')
-      GROUP BY t.task_id, ui.interaction_id
-    `;
-    db.query(query, [userId, userId], (err, result) => {
+    db.query(sql, [userId, userId, subDepartmentId], (err, result) => {
       if (err) return callback(err);
 
       const tasks = {};
@@ -403,7 +374,7 @@ const Task = {
   },
 
   getOtherTasksForTeamMember: (userId, subDepartmentId, callback) => {
-    const query = `
+    const sql = `
       SELECT t.*, 
              GROUP_CONCAT(DISTINCT u.name) AS assignees, 
              GROUP_CONCAT(DISTINCT sd.sub_department_name) AS sub_departments,
@@ -416,10 +387,11 @@ const Task = {
       LEFT JOIN sub_departments sd ON tsd.sub_department_id = sd.sub_department_id
       LEFT JOIN users creator ON t.created_by = creator.user_id
       LEFT JOIN userinteractions ui ON t.task_id = ui.task_id AND ui.user_id = ?
-      WHERE tsd.sub_department_id = ? AND ta.user_id != ? AND ui.interaction_type IN ('expand', 'open')
+      WHERE ta.user_id != ? AND tsd.sub_department_id = ?
       GROUP BY t.task_id, ui.interaction_id
+      ORDER BY t.created_at DESC
     `;
-    db.query(query, [userId, subDepartmentId, userId], (err, result) => {
+    db.query(sql, [userId, userId, subDepartmentId], (err, result) => {
       if (err) return callback(err);
 
       const tasks = {};
@@ -454,76 +426,7 @@ const Task = {
   getInteractionsByTaskId: (taskId, callback) => {
     const sql = 'SELECT * FROM UserInteractions WHERE task_id = ? ORDER BY interaction_timestamp';
     db.query(sql, [taskId], callback);
-  },
-
-
-  getTasksByStatus: (status, callback) => {
-    const sql = `
-      SELECT t.*, 
-             GROUP_CONCAT(DISTINCT u.name) AS assignees, 
-             GROUP_CONCAT(DISTINCT sd.sub_department_name) AS sub_departments,
-             creator.name AS created_by_name,
-             ui.interaction_id, ui.user_id, ui.interaction_type, ui.interaction_timestamp
-      FROM tasks t
-      LEFT JOIN task_assignees ta ON t.task_id = ta.task_id
-      LEFT JOIN users u ON ta.user_id = u.user_id
-      LEFT JOIN task_sub_departments tsd ON t.task_id = tsd.task_id
-      LEFT JOIN sub_departments sd ON tsd.sub_department_id = sd.sub_department_id
-      LEFT JOIN users creator ON t.created_by = creator.user_id
-      LEFT JOIN userinteractions ui ON t.task_id = ui.task_id
-      WHERE t.status = ?
-      GROUP BY t.task_id, ui.interaction_id
-      ORDER BY t.created_at DESC
-    `;
-    db.query(sql, [status], (err, result) => {
-      if (err) return callback(err);
-
-      const tasks = {};
-      result.forEach(row => {
-        if (!tasks[row.task_id]) {
-          tasks[row.task_id] = {
-            ...row,
-            interactions: []
-          };
-        }
-        if (row.interaction_id) {
-          tasks[row.task_id].interactions.push({
-            interaction_id: row.interaction_id,
-            user_id: row.user_id,
-            interaction_type: row.interaction_type,
-            interaction_timestamp: row.interaction_timestamp
-          });
-        }
-      });
-
-      callback(null, Object.values(tasks));
-    });
-  },
-
-
-
-  getUnintractedTasksForTeamMember: (userId, subDepartmentId, callback) => {
-    const query = `
-      SELECT t.*, 
-             GROUP_CONCAT(DISTINCT u.name) AS assignees, 
-             GROUP_CONCAT(DISTINCT sd.sub_department_name) AS sub_departments,
-             creator.name AS created_by_name
-      FROM tasks t
-      LEFT JOIN task_assignees ta ON t.task_id = ta.task_id
-      LEFT JOIN users u ON ta.user_id = u.user_id
-      LEFT JOIN task_sub_departments tsd ON t.task_id = tsd.task_id
-      LEFT JOIN sub_departments sd ON tsd.sub_department_id = sd.sub_department_id
-      LEFT JOIN users creator ON t.created_by = creator.user_id
-      WHERE (ta.user_id = ? OR tsd.sub_department_id = ?) AND t.interacted = FALSE
-      GROUP BY t.task_id
-    `;
-    db.query(query, [userId, subDepartmentId], (err, result) => {
-      if (err) {
-        return callback(err);
-      }
-      callback(null, result);
-    });
-  },
+  }
 
 };
 

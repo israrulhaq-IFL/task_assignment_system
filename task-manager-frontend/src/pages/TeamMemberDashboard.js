@@ -15,9 +15,6 @@ const TeamMemberDashboard = ({ user }) => {
   const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
   const role = 'Team Member'; // Set role to 'Team Member'
-  const [myTasks, setMyTasks] = useState([]);
-  const [otherTasks, setOtherTasks] = useState([]);
-  const [unintractedTasks, setUnintractedTasks] = useState([]);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -28,8 +25,6 @@ const TeamMemberDashboard = ({ user }) => {
           url = `${API_BASE_URL}/api/tasks/team-member/my-tasks`;
         } else if (tab === 'other-tasks') {
           url = `${API_BASE_URL}/api/tasks/team-member/other-tasks`;
-        } else if (tab === 'unintracted-tasks') {
-          url = `${API_BASE_URL}/api/tasks/team-member/unintracted-tasks`;
         }
         const response = await axios.get(url, {
           headers: { Authorization: `Bearer ${token}` }
@@ -42,7 +37,6 @@ const TeamMemberDashboard = ({ user }) => {
           created_at: task.created_at || new Date().toISOString(),
         }));
         setTasks(tasksWithDefaults);
-        updateTaskLists(tasksWithDefaults);
       } catch (error) {
         console.error('There was an error fetching the tasks!', error);
         if (error.response) {
@@ -57,20 +51,12 @@ const TeamMemberDashboard = ({ user }) => {
     }
   }, [tab, user]);
 
-  const updateTaskLists = (tasks) => {
-    setMyTasks(tasks.filter(task => task.interacted && task.assignees.includes(user.user_id.toString())));
-    setOtherTasks(tasks.filter(task => task.interacted && !task.assignees.includes(user.user_id.toString())));
-    setUnintractedTasks(tasks.filter(task => !task.interacted));
-  };
-
   const handleStatusChange = async (id, newStatus) => {
     try {
       await axios.put(`${API_BASE_URL}/api/tasks/${id}/status`, { status: newStatus }, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
-      const updatedTasks = tasks.map(task => task.task_id === id ? { ...task, status: newStatus, interacted: true } : task);
-      setTasks(updatedTasks);
-      updateTaskLists(updatedTasks);
+      setTasks(tasks.map(task => task.task_id === id ? { ...task, status: newStatus } : task));
     } catch (error) {
       console.error('There was an error updating the task status!', error);
       if (error.response) {
@@ -85,9 +71,7 @@ const TeamMemberDashboard = ({ user }) => {
       await axios.delete(`${API_BASE_URL}/api/tasks/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       });
-      const updatedTasks = tasks.filter(task => task.task_id !== id);
-      setTasks(updatedTasks);
-      updateTaskLists(updatedTasks);
+      setTasks(tasks.filter(task => task.task_id !== id));
     } catch (error) {
       console.error('There was an error deleting the task!', error);
       if (error.response) {
@@ -109,11 +93,8 @@ const TeamMemberDashboard = ({ user }) => {
         ...addedTask,
         task_id: addedTask.id,
         created_at: addedTask.created_at || new Date().toISOString(),
-        interacted: false // Mark task as unintracted initially
       };
-      const updatedTasks = [...tasks, taskWithDefaults];
-      setTasks(updatedTasks);
-      updateTaskLists(updatedTasks);
+      setTasks([...tasks, taskWithDefaults]);
       setShowForm(false);
     } catch (error) {
       console.error('There was an error adding the task!', error);
@@ -136,14 +117,11 @@ const TeamMemberDashboard = ({ user }) => {
       </div>
       {error && <Alert variant="danger" className="dashboard-alert">{error}</Alert>}
       <Tabs activeKey={tab} onSelect={handleTabSelect} id="task-tabs" className="dashboard-tabs">
-        <Tab eventKey="unintracted-tasks" title={`Unintracted Tasks (${unintractedTasks.length})`}>
-          <TaskList tasks={unintractedTasks} onDelete={handleDelete} onStatusChange={handleStatusChange} user={user} canDragAndDrop={false} />
-        </Tab>
         <Tab eventKey="my-tasks" title="My Tasks">
-          <TaskList tasks={myTasks} onDelete={handleDelete} onStatusChange={handleStatusChange} user={user} canDragAndDrop={true} />
+          <TaskList tasks={tasks} onDelete={handleDelete} onStatusChange={handleStatusChange} user={user} canDragAndDrop={true} />
         </Tab>
         <Tab eventKey="other-tasks" title="Other Tasks in my dept">
-          <TaskList tasks={otherTasks} onDelete={handleDelete} onStatusChange={handleStatusChange} user={user} canDragAndDrop={false} />
+          <TaskList tasks={tasks} onDelete={handleDelete} onStatusChange={handleStatusChange} user={user} canDragAndDrop={false} />
         </Tab>
       </Tabs>
       <Modal show={showForm} onHide={() => setShowForm(false)} className="dashboard-modal">
